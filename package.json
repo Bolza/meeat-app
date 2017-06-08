@@ -10,11 +10,14 @@
     "firebase": "^3.9.0",
     "react": "16.0.0-alpha.6",
     "react-native": "0.44.0",
+    "react-native-communications": "^2.2.1",
     "react-native-material-kit": "^0.4.1",
-    "react-native-material-ui": "^1.10.0",
-    "react-native-vector-icons": "^4.1.1",
+    "react-native-material-ui": "^1.12.0",
+    "react-native-router-flux": "^3.39.2",
+    "react-native-vector-icons": "^4.2.0",
     "react-redux": "^5.0.5",
-    "redux": "^3.6.0"
+    "redux": "^3.6.0",
+    "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
     "babel-jest": "20.0.1",

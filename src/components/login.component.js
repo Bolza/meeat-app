@@ -1,8 +1,10 @@
 import firebase from 'firebase';
 import React, { Component } from 'react';
-import { Button } from 'react-native-material-ui';
+import { COLOR, ThemeProvider, Button } from 'react-native-material-ui';
 import { Text, StyleSheet } from 'react-native';
+import { connect } from 'react-redux';
 
+import { EmailChangedAction, PasswordChangedAction } from '../actions';
 import { Card, CardSection, Input, Spinner, Container } from './common';
 
 class Login extends Component {
@@ -63,17 +65,26 @@ class Login extends Component {
             />
         );
     }
+
+    onPasswordChange(text) {
+        this.props.PasswordChangedAction(text);
+    }
+
+    onEmailChange(text) {
+        this.props.EmailChangedAction(text);
+    }
     
     render() {
-        
         return (
+            <ThemeProvider uiTheme={uiTheme}>
+                
             <Card>
                 <CardSection>
                     <Input
                         label="email"
                         placeholder="Insert email"
-                        value={this.state.email}
-                        onChangeText={email => this.setState({ email: email.toLowerCase() })}
+                        value={this.props.email}
+                        onChangeText={this.onEmailChange.bind(this)}
                     />
                 </CardSection>
                     
@@ -82,8 +93,8 @@ class Login extends Component {
                         secure
                         label="password"
                         placeholder="Insert password"
-                        value={this.state.password}
-                        onChangeText={password => this.setState({ password })}
+                        value={this.props.password}
+                        onChangeText={this.onPasswordChange.bind(this)}
                     />
                 </CardSection>
                 
@@ -100,6 +111,8 @@ class Login extends Component {
                     {this.renderButton()}
                 </CardSection>
             </Card>
+
+            </ThemeProvider>
         );
     }
 }
@@ -118,7 +131,25 @@ const styles = StyleSheet.create({
     },
     loginButton: {
         flex: 1,
-    },
+    }, 
 });
 
-export { Login };
+const uiTheme = {
+    palette: {
+        primaryColor: COLOR.green500,
+    },
+    toolbar: {
+        container: {
+            height: 50,
+        },
+    },
+};
+
+const mapStateToProps = (state) => {
+    return {
+        email: state.auth.email,
+        password: state.auth.password
+    };
+};
+
+export default connect(mapStateToProps, { EmailChangedAction, PasswordChangedAction })(Login);

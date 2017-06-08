@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import reducers from './reducers';
 import { Header } from './components/common';
+import Login from './components/login.component';
 
  const config = {
     apiKey: 'AIzaSyA3D_frhPdNG2vYG0QAKMwe4-xI2K8-VyQ',
@@ -23,7 +24,7 @@ const App = () => {
         <Provider store={createStore(reducers)}>
             <View style={{ flex: 1 }}>
                 <Header text="Tech Stack" />
-                <Text>HH</Text>
+                <Login />
             </View>
         </Provider>
     );
