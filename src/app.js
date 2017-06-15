@@ -18,6 +18,15 @@ import Login from './components/login.component';
     messagingSenderId: '449402475100'
 };
 
+const Logger = (store) => next => action => {
+    console.group(action.type);
+    console.info('dispatching', action);
+    const result = next(action);
+    console.log('next state', store.getState());
+    console.groupEnd(action.type);
+    return result;
+};
+
 class App extends Component {
 
     componentWillMount() {
@@ -28,7 +37,7 @@ class App extends Component {
         const store = createStore(
             reducers, 
             { auth: {} }, 
-            applyMiddleware(ReduxThunk)
+            applyMiddleware(ReduxThunk, Logger)
         );
 
         return (

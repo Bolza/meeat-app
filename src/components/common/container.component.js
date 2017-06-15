@@ -30,7 +30,7 @@ class Container extends Component {
     }
 
     renderContent() {
-        console.log(this.state);
+        // console.log(this.state);
         if (this.state.loading) {
             return <Spinner />;
         } else if (this.state.error) {

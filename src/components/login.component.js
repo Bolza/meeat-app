@@ -23,15 +23,15 @@ class Login extends Component {
     }    
     
     onCreationError(resp) {
-        console.log('onCreationError', resp);
+        // console.log('onCreationError', resp);
         this.setState({ loading: false, message: '', error: resp.message });
     }
     onCreationSuccess(resp) {
-        console.log('onCreationSuccess', resp);
+        // console.log('onCreationSuccess', resp);
         this.setState({ loading: false, error: '', message: 'Creation Success' });
     }
     onLoginSuccess(resp) {
-        console.log('onLoginSuccess', resp);
+        // console.log('onLoginSuccess', resp);
         // const { email, password } = this.props;
         this.setState({ loading: false, error: '', message: 'Login Success' });
         // this.props.LoginSuccessAction(resp);
@@ -56,11 +56,12 @@ class Login extends Component {
     }
     
     onPasswordChange(text) {
-        this.props.PasswordChangedAction(text);
+        this.props.dispatch(new PasswordChangedAction(text));
     }
 
     onEmailChange(text) {
-        this.props.EmailChangedAction(text.toLowerCase());
+        const lowText = text.toLowerCase();
+        this.props.dispatch(new EmailChangedAction(lowText));
     }
 
     renderButton() {
