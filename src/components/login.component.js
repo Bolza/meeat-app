@@ -1,12 +1,12 @@
-// import firebase from 'firebase';
+/* eslint-disable max-len */
 import React, { Component } from 'react';
 import { COLOR, ThemeProvider, Button } from 'react-native-material-ui';
 import { Text, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 
-import { EmailChangedAction, PasswordChangedAction, LoginSuccessAction, 
-    LoginAttemptAction } from '../actions';
+import { EmailChangedAction, PasswordChangedAction, LoginSuccessAction, LoginAttemptAction } from '../actions';
 import { Card, CardSection, Input, Spinner, Container } from './common';
+/* eslint-enable max-len */
 
 class Login extends Component {
 
@@ -40,19 +40,7 @@ class Login extends Component {
     onButtonPress() {
         const { email, password } = this.props;
         this.setState({ error: '', loading: true });
-        // this.props.LoginAttemptAction({ email, password });
         this.props.dispatch(new LoginAttemptAction({ email, password }));
-        // firebase
-        //     .auth()
-        //     .signInWithEmailAndPassword(email, password)
-        //     .then(this.onLoginSuccess.bind(this))
-        //     .catch(() => {
-        //         firebase
-        //             .auth()
-        //             .createUserWithEmailAndPassword(email, password)
-        //             .then(this.onCreationSuccess.bind(this))
-        //             .catch(this.onCreationError.bind(this));
-        //     });
     }
     
     onPasswordChange(text) {
@@ -154,7 +142,8 @@ const uiTheme = {
 const mapStateToProps = (state) => {
     return {
         email: state.auth.email,
-        password: state.auth.password
+        password: state.auth.password,
+        error: state.auth.error,
     };
 };
 
