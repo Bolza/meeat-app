@@ -1,34 +1,46 @@
 import firebase from 'firebase';
  
-export const EmailChangedActionType = 'Email changed';
+export const EMAIL_CHANGED_ACTION = 'Email changed';
 export const EmailChangedAction = (text) => {
     return {
-        type: EmailChangedActionType,
+        type: EMAIL_CHANGED_ACTION,
         payload: text
     };
 };
 
-export const PasswordChangedActionType = 'Password changed';
+export const PASSWORD_CHANGED_ACTION = 'Password changed';
 export const PasswordChangedAction = (text) => {
     return {
-        type: PasswordChangedActionType,
+        type: PASSWORD_CHANGED_ACTION,
         payload: text
     };
 };
 
-export const LoginAttemptActionType = 'Login attempt';
+// export const LOGIN_ATTEMPT_ACTION = 'Login attempt';
 export const LoginAttemptAction = ({ email, password }) => {
     return (dispatch) => {
-        console.log(email, password)
         firebase.auth().signInWithEmailAndPassword(email, password)
-            .then(user => dispatch(new LoginSuccessAction(user)));
+            .then(user => dispatch(new LoginSuccessAction(user)))
+            .catch(() => {
+                firebase.auth().createUserWithEmailAndPassword(email, password)
+                    .then(user => dispatch(new LoginSuccessAction(user)))
+                    .catch(() => dispatch(new LoginFailAction()));
+            });
     };
 };
 
-export const LoginSuccessActionType = 'Login Success';
+export const LOGIN_SUCCESS_ACTION = 'Login Success';
 export const LoginSuccessAction = (user) => {
     return {
-        type: LoginSuccessActionType,
+        type: LOGIN_SUCCESS_ACTION,
         payload: user
+    };
+};
+
+export const LOGIN_FAIL_ACTION = 'Login FAIL';
+export const LoginFailAction = () => {
+    return {
+        type: LOGIN_FAIL_ACTION,
+        payload: null
     };
 };
