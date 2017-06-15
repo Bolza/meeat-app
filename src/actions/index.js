@@ -1,4 +1,5 @@
-
+import firebase from 'firebase';
+ 
 export const EmailChangedActionType = 'Email changed';
 export const EmailChangedAction = (text) => {
     return {
@@ -16,9 +17,18 @@ export const PasswordChangedAction = (text) => {
 };
 
 export const LoginAttemptActionType = 'Login attempt';
-export const LoginAttemptAction = (text) => {
+export const LoginAttemptAction = ({ email, password }) => {
+    return (dispatch) => {
+        console.log(email, password)
+        firebase.auth().signInWithEmailAndPassword(email, password)
+            .then(user => dispatch(new LoginSuccessAction(user)));
+    };
+};
+
+export const LoginSuccessActionType = 'Login Success';
+export const LoginSuccessAction = (user) => {
     return {
-        type: LoginAttemptActionType,
-        payload: text
+        type: LoginSuccessActionType,
+        payload: user
     };
 };

@@ -1,10 +1,11 @@
-import firebase from 'firebase';
+// import firebase from 'firebase';
 import React, { Component } from 'react';
 import { COLOR, ThemeProvider, Button } from 'react-native-material-ui';
 import { Text, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 
-import { EmailChangedAction, PasswordChangedAction } from '../actions';
+import { EmailChangedAction, PasswordChangedAction, LoginSuccessAction, 
+    LoginAttemptAction } from '../actions';
 import { Card, CardSection, Input, Spinner, Container } from './common';
 
 class Login extends Component {
@@ -31,25 +32,37 @@ class Login extends Component {
     }
     onLoginSuccess(resp) {
         console.log('onLoginSuccess', resp);
+        // const { email, password } = this.props;
         this.setState({ loading: false, error: '', message: 'Login Success' });
+        // this.props.LoginSuccessAction(resp);
     }
     
     onButtonPress() {
-        const { email, password } = this.state;
+        const { email, password } = this.props;
         this.setState({ error: '', loading: true });
-        firebase
-            .auth()
-            .signInWithEmailAndPassword(email, password)
-            .then(this.onLoginSuccess.bind(this))
-            .catch(() => {
-                firebase
-                    .auth()
-                    .createUserWithEmailAndPassword(email, password)
-                    .then(this.onCreationSuccess.bind(this))
-                    .catch(this.onCreationError.bind(this));
-            });
+        // this.props.LoginAttemptAction({ email, password });
+        this.props.dispatch(new LoginAttemptAction({ email, password }));
+        // firebase
+        //     .auth()
+        //     .signInWithEmailAndPassword(email, password)
+        //     .then(this.onLoginSuccess.bind(this))
+        //     .catch(() => {
+        //         firebase
+        //             .auth()
+        //             .createUserWithEmailAndPassword(email, password)
+        //             .then(this.onCreationSuccess.bind(this))
+        //             .catch(this.onCreationError.bind(this));
+        //     });
     }
     
+    onPasswordChange(text) {
+        this.props.PasswordChangedAction(text);
+    }
+
+    onEmailChange(text) {
+        this.props.EmailChangedAction(text.toLowerCase());
+    }
+
     renderButton() {
         if (this.state.loading) {
             return <Spinner />;
@@ -66,14 +79,6 @@ class Login extends Component {
         );
     }
 
-    onPasswordChange(text) {
-        this.props.PasswordChangedAction(text);
-    }
-
-    onEmailChange(text) {
-        this.props.EmailChangedAction(text);
-    }
-    
     render() {
         return (
             <ThemeProvider uiTheme={uiTheme}>
@@ -152,4 +157,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps, { EmailChangedAction, PasswordChangedAction })(Login);
+export default connect(mapStateToProps)(Login);
