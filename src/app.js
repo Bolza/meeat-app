@@ -8,6 +8,7 @@ import { createStore, applyMiddleware } from 'redux';
 import reducers from './reducers';
 import { Header } from './components/common';
 import Login from './components/login.component';
+import Router from './router';
 
  const config = {
     apiKey: 'AIzaSyA3D_frhPdNG2vYG0QAKMwe4-xI2K8-VyQ',
@@ -44,7 +45,8 @@ class App extends Component {
             <Provider store={store}>
                 <View style={{ flex: 1 }}>
                     <Header text="Tech Stack" />
-                    <Login />
+                    <Router />
+                    {/*<Login />*/}
                 </View>
             </Provider>
         );
