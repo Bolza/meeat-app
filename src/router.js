@@ -3,12 +3,15 @@ import { Scene, Router } from 'react-native-router-flux';
 import Login from './components/login.component';
 import EmployeeListComponent from './components/employee-list.component';
 
-
 const RouterComponent = () => {
     return (
         <Router sceneStyle={style}>
-            <Scene key="login" component={Login} title="Login" initial />
-            <Scene key="employeelist" component={EmployeeListComponent} title="Employees" />
+            <Scene key="auth">
+                <Scene key="login" component={Login} title="Login" initial />
+            </Scene>
+            <Scene key="main">
+                <Scene key="employeeList" component={EmployeeListComponent} title="Employees" />
+            </Scene>
         </Router>
     );
 };

@@ -11,8 +11,8 @@ import { Card, CardSection, Input, Spinner, Container } from './common';
 class Login extends Component {
 
     state = { 
-        email: '', 
-        password: '',
+        email: 'asd@asd.asd', 
+        password: 'asdasd',
         error: '',
         message: '',
         loading: false,
@@ -38,7 +38,9 @@ class Login extends Component {
     }
     
     onButtonPress() {
-        const { email, password } = this.props;
+        let { email, password } = this.props;
+        email = 'asd@asd.asd';
+        password = 'asdasd';
         this.setState({ error: '', loading: true });
         this.props.dispatch(new LoginAttemptAction({ email, password }));
     }
