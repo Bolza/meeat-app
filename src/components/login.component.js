@@ -32,7 +32,6 @@ class Login extends Component {
     }
     onLoginSuccess(resp) {
         // console.log('onLoginSuccess', resp);
-        // const { email, password } = this.props;
         this.setState({ loading: false, error: '', message: 'Login Success' });
         // this.props.LoginSuccessAction(resp);
     }

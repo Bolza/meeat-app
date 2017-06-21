@@ -7,11 +7,10 @@ import CreateEmployee from './components/create-employee.component';
 const RouterComponent = () => {
     return (
         <Router sceneStyle={style}>
-            <Scene key="auth">
-                <Scene key="login" component={Login} title="Login" initial />
-            </Scene>
+           
             <Scene key="main">
                 <Scene
+                    initial
                     key="employeeList" 
                     component={EmployeeListComponent} 
                     title="Employees" 
@@ -23,6 +22,9 @@ const RouterComponent = () => {
                     component={CreateEmployee} 
                     title="Create Employee" 
                 />
+            </Scene>
+             <Scene key="auth">
+                <Scene key="login" component={Login} title="Login" />
             </Scene>
         </Router>
     );
