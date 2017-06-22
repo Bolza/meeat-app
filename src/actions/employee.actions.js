@@ -8,3 +8,11 @@ export const InputChangedAction = ({prop, value}) => {
         payload: {prop, value}
     };
 };
+
+export const CREATE_EMPLOYEE_ACTION = 'Create Employee';
+export const CreateEmployeedAction = ({name, phone, shift}) => {
+    return {
+        type: CREATE_EMPLOYEE_ACTION,
+        payload: {name, phone, shift}
+    };
+};

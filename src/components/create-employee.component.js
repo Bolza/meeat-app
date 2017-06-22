@@ -2,10 +2,19 @@ import React, { Component } from 'react';
 import { View, Text, Button, Picker } from 'react-native';
 import { connect } from 'react-redux';
 import { Card, CardSection, Input } from './common';
-import { InputChangedAction } from '../actions/employee.actions';
+import { InputChangedAction, CreateEmployeedAction } from '../actions/employee.actions';
 
 class CreateEmployee extends Component {
     state = {}
+    
+    componentWillMount() {
+        this.inputUpdated('shift', 'Mon');
+    }    
+    
+    onButtonPress() {
+        const {name, phone, shift} = this.props;
+        this.props.dispatch(new CreateEmployeedAction({name, phone, shift}));
+    }
 
     inputUpdated(prop, value) {
         this.props.dispatch(new InputChangedAction({prop, value}));
@@ -44,7 +53,9 @@ class CreateEmployee extends Component {
                     </Picker>
                 </CardSection>
                 <CardSection>
-                    <Button title="Create" placeholder="Jane" />
+                    <Button 
+                        onPress={this.onButtonPress.bind(this)}
+                        title="Create" placeholder="Jane" />
                 </CardSection>
             </Card>
         );
