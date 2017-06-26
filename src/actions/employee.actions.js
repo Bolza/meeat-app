@@ -45,8 +45,6 @@ export const FetchEmployeesAction = () => {
         const user = firebase.auth().currentUser;
         firebase.database().ref(`/users/${user.uid}/employees`)
             .on('value', (snapshot) => {
-                const currentList = values(snapshot.val());
-                debugger
                 dispatch(new FetchEmployeesSuccessAction(snapshot.val()));
             });
     };
