@@ -10,7 +10,6 @@ const RouterComponent = () => {
            
             <Scene key="main">
                 <Scene
-                    initial
                     key="employeeList" 
                     component={EmployeeListComponent} 
                     title="Employees" 
@@ -23,8 +22,8 @@ const RouterComponent = () => {
                     title="Create Employee" 
                 />
             </Scene>
-             <Scene key="auth">
-                <Scene key="login" component={Login} title="Login" />
+             <Scene key="auth" initial>
+                <Scene key="login" component={Login} title="Login"  />
             </Scene>
         </Router>
     );
