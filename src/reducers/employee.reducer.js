@@ -1,4 +1,4 @@
-import { INPUT_CHANGED_ACTION } from '../actions/employee.actions';
+import { INPUT_CHANGED_ACTION, CREATE_EMPLOYEE_SUCCESS_ACTION } from '../actions/employee.actions';
 
 const INITIAL_STATE = {
     name: '',
@@ -12,6 +12,11 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 [action.payload.prop]: action.payload.value
+            };
+        case CREATE_EMPLOYEE_SUCCESS_ACTION:
+            return {
+                ...state,
+                ...INITIAL_STATE
             };
         default:
             return state;

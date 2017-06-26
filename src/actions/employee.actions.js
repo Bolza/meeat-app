@@ -23,7 +23,10 @@ export const CreateEmployeeAction = ({name, phone, shift}) => {
 
 export const CREATE_EMPLOYEE_SUCCESS_ACTION = 'Create Employee Success';
 export const CreateEmployeeSuccessAction = () => {
-    return () => Actions.employeeList({type: 'reset'});
+    return (dispatch) => {
+        dispatch({ type: CREATE_EMPLOYEE_SUCCESS_ACTION });
+        Actions.employeeList({type: 'reset'});
+    };
 };
 
 export const CREATE_EMPLOYEE_FAIL_ACTION = 'Create Employee Fail';
