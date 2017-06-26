@@ -11,8 +11,8 @@ import { Card, CardSection, Input, Spinner, Container } from './common';
 class Login extends Component {
 
     state = { 
-        email: 'asd@asd.asd', 
-        password: 'asdasd',
+        email: '', 
+        password: '',
         error: '',
         message: '',
         loading: false,

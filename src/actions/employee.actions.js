@@ -1,4 +1,5 @@
 import firebase from 'firebase';
+import {values} from 'lodash';
 import {Actions} from 'react-native-router-flux';
 
 export const INPUT_CHANGED_ACTION = 'Input changed';
@@ -34,5 +35,27 @@ export const CreateEmployeeFailAction = (error) => {
     return {
         type: CREATE_EMPLOYEE_FAIL_ACTION,
         payload: error
+    };
+};
+
+// XXX Listener should be added once
+export const FETCH_EMPLOYEES = 'Fetch Employees';
+export const FetchEmployeesAction = () => {
+    return (dispatch) => {
+        const user = firebase.auth().currentUser;
+        firebase.database().ref(`/users/${user.uid}/employees`)
+            .on('value', (snapshot) => {
+                const currentList = values(snapshot.val());
+                debugger
+                dispatch(new FetchEmployeesSuccessAction(snapshot.val()));
+            });
+    };
+};
+
+export const FETCH_EMPLOYEES_SUCCESS = 'Fetch Employees Success';
+export const FetchEmployeesSuccessAction = (newEmployee) => {
+     return {
+        type: FETCH_EMPLOYEES_SUCCESS,
+        payload: newEmployee
     };
 };

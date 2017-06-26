@@ -23,7 +23,7 @@ export const LoginAttemptAction = ({ email, password }) => {
         dispatch({ type: LOGIN_ATTEMPT_ACTION });
         firebase.auth().signInWithEmailAndPassword(email, password)
             .then(user => dispatch(new LoginSuccessAction(user)))
-            .catch(() => dispatch(new LoginFailAction()));
+            // .catch(() => dispatch(new LoginFailAction()));
             // .catch(() => {
             //     firebase.auth().createUserWithEmailAndPassword(email, password)
             //         .then(user => dispatch(new LoginSuccessAction(user)))
