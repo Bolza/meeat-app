@@ -18,10 +18,16 @@ class EventCreationComponent extends Component {
        
     }
 
+    animateTo({latitude, longitude}) {
+        console.log({latitude, longitude});
+        this.map.animateToCoordinate({latitude, longitude});
+    }
+
     render() {
         return (
             <View style={{flex: 1}}>
                 <MapView
+                    ref={ref => { this.map = ref; }}
                     style={{flex: 1}}
                     initialRegion={this.initialRegion}
                     region={this.state.region}
@@ -64,8 +70,11 @@ class EventCreationComponent extends Component {
                     }}
                     onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
                         /*console.log(data);*/
-                        console.log(details.geometry.location);
-                        this.setState({region: details.geometry.location});
+                        //console.log(details.geometry.location);
+                        this.animateTo({...details.geometry.location});
+                        //this.setState({
+                        //    region: Object.assign({}, this.state.region, details.geometry.location),
+                        //});
                     }}
                 />
             </View>
