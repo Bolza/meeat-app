@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, Text, ListView, ListItem } from 'react-native';
-import {FetchEmployeesAction} from '../actions/employee.actions';
+import { View, Text, ListView, TouchableHighlight } from 'react-native';
+import {FetchEmployeesAction, EmployeesZoomAction} from '../actions/employee.actions';
 
 class EmployeeListComponent extends Component {
     state = {}
@@ -18,8 +18,16 @@ class EmployeeListComponent extends Component {
         this.dataSource = this.dataSource.cloneWithRows(next.employeeList);
     }
 
+    onPressRow(row) {
+        this.props.dispatch(new EmployeesZoomAction(row.id));
+    }
+
     renderRow(item) {
-        return <Text>{item.name}</Text>;
+        return (
+        <TouchableHighlight onPress={this.onPressRow.bind(this, item)}>
+            <Text >{item.name}</Text>
+        </TouchableHighlight>
+        );
     }
 
     render() {
@@ -27,7 +35,7 @@ class EmployeeListComponent extends Component {
             <ListView
                 enableEmptySections
                 dataSource={this.dataSource}
-                renderRow={this.renderRow}
+                renderRow={this.renderRow.bind(this)}
             />
         );
     }

@@ -1,6 +1,6 @@
 import { forOwn } from 'lodash';
 
-import { FETCH_EMPLOYEES_SUCCESS } from '../actions/employee.actions';
+import { EMPLOYEES_FETCH_ACTION_SUCCESS } from '../actions/employee.actions';
 
 const INITIAL_STATE = {
     employeeList: [],
@@ -8,7 +8,7 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
-        case FETCH_EMPLOYEES_SUCCESS: 
+        case EMPLOYEES_FETCH_ACTION_SUCCESS: 
             
             return {
                 ...state,

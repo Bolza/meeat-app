@@ -39,7 +39,7 @@ export const CreateEmployeeFailAction = (error) => {
 };
 
 // XXX Listener should be added once
-export const FETCH_EMPLOYEES = 'Fetch Employees';
+export const EMPLOYEES_FETCH_ACTION = 'Fetch Employees';
 export const FetchEmployeesAction = () => {
     return (dispatch) => {
         const user = firebase.auth().currentUser;
@@ -50,10 +50,18 @@ export const FetchEmployeesAction = () => {
     };
 };
 
-export const FETCH_EMPLOYEES_SUCCESS = 'Fetch Employees Success';
+export const EMPLOYEES_FETCH_ACTION_SUCCESS = 'Fetch Employees Success';
 export const FetchEmployeesSuccessAction = (newEmployee) => {
      return {
-        type: FETCH_EMPLOYEES_SUCCESS,
+        type: EMPLOYEES_FETCH_ACTION_SUCCESS,
         payload: newEmployee
+    };
+};
+
+export const EMPLOYEES_ZOOM_ACTION = 'Zoom Employee';
+export const EmployeesZoomAction = (employeeId) => {
+     return {
+        type: EMPLOYEES_ZOOM_ACTION,
+        payload: employeeId
     };
 };
