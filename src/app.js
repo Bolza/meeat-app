@@ -11,12 +11,18 @@ import Login from './components/login.component';
 import Router from './router';
 
  const config = {
-    apiKey: 'AIzaSyA3D_frhPdNG2vYG0QAKMwe4-xI2K8-VyQ',
-    authDomain: 'manager-956c7.firebaseapp.com',
-    databaseURL: 'https://manager-956c7.firebaseio.com',
-    projectId: 'manager-956c7',
-    storageBucket: 'manager-956c7.appspot.com',
-    messagingSenderId: '449402475100'
+    // apiKey: 'AIzaSyA3D_frhPdNG2vYG0QAKMwe4-xI2K8-VyQ',
+    // authDomain: 'manager-956c7.firebaseapp.com',
+    // databaseURL: 'https://manager-956c7.firebaseio.com',
+    // projectId: 'manager-956c7',
+    // storageBucket: 'manager-956c7.appspot.com',
+    // messagingSenderId: '449402475100'
+    apiKey: 'AIzaSyBFC1NHvenIIRSDGroVWzGpAqmT14YeOyA',
+    authDomain: 'meat-5432f.firebaseapp.com',
+    databaseURL: 'https://meat-5432f.firebaseio.com',
+    projectId: 'meat-5432f',
+    storageBucket: 'meat-5432f.appspot.com',
+    messagingSenderId: '260439457350'
 };
 
 const Logger = (store) => next => action => {
