@@ -60,8 +60,9 @@ export const FetchEmployeesSuccessAction = (newEmployee) => {
 
 export const EMPLOYEES_ZOOM_ACTION = 'Zoom Employee';
 export const EmployeesZoomAction = (employeeId) => {
-     return {
-        type: EMPLOYEES_ZOOM_ACTION,
-        payload: employeeId
+      return (dispatch) => {
+        //   should be stored by reducer
+        dispatch({ type: EMPLOYEES_ZOOM_ACTION, payload: employeeId });
+        Actions.createEmployee({type: 'reset', id: employeeId});
     };
 };

@@ -24,9 +24,9 @@ class EmployeeListComponent extends Component {
 
     renderRow(item) {
         return (
-        <TouchableHighlight onPress={this.onPressRow.bind(this, item)}>
-            <Text >{item.name}</Text>
-        </TouchableHighlight>
+            <TouchableHighlight onPress={this.onPressRow.bind(this, item)}>
+                <Text >{item.name}</Text>
+            </TouchableHighlight>
         );
     }
 
