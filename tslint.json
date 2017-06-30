@@ -85,7 +85,7 @@
       "check-space"
     ],
     "interface-name": [false],
-    "jsdoc-format": true,
+    "jsdoc-format": false,
     "no-consecutive-blank-lines": [true],
     "no-parameter-properties": false,
     "one-line": [
@@ -102,7 +102,7 @@
       "avoid-escape"
     ],
     "semicolon": [
-      true,
+      false,
       "never"
     ],
     "variable-name": [

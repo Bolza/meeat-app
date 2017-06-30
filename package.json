@@ -3,6 +3,12 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "watch": "npm run build -- -w",
+    "start:ios": "npm run build && concurrently -r 'npm run watch' 'react-native run-ios'",
+    "tsc": "tsc",
+    "lint": "tslint src/**/*.ts",
+    "clean": "rimraf artifacts",
+    "build": "npm run clean && npm run tsc --",
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest"
   },
@@ -23,18 +29,18 @@
     "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
-    "@types/jest": "^20.0.1",
-    "@types/react": "^15.0.30",
-    "@types/react-native": "^0.44.11",
+    "@types/jest": "^20.0.2",
+    "@types/react": "^15.0.33",
+    "@types/react-native": "^0.44.14",
     "babel-jest": "20.0.1",
     "babel-preset-react-native": "1.9.2",
-    "concurrently": "^3.4.0",
+    "concurrently": "^3.5.0",
     "eslint-config-rallycoding": "^3.2.0",
     "jest": "20.0.1",
     "react-test-renderer": "16.0.0-alpha.6",
     "rimraf": "^2.6.1",
     "tslint": "^5.4.3",
-    "typescript": "^2.3.4"
+    "typescript": "^2.4.1"
   },
   "jest": {
     "preset": "react-native"
