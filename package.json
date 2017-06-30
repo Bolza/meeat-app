@@ -5,6 +5,7 @@
   "scripts": {
     "watch": "npm run build -- -w",
     "start:ios": "npm run build && concurrently -r 'npm run watch' 'react-native run-ios'",
+    "start:android": "npm run build && concurrently -r 'npm run watch' 'react-native run-android'",
     "tsc": "tsc",
     "lint": "tslint src/**/*.ts",
     "clean": "rimraf artifacts",
