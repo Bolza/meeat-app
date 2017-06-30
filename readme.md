@@ -6,3 +6,6 @@ To emulate on Android:
 - add lines to ~/.bash_profile
 - `export ANDROID_HOME=/usr/local/share/android-sdk`
 - `export PATH=$ANDROID_HOME/build-tools/$(ls -tr $ANDROID_HOME/build-tools/ | tail -1):$PATH`
+
+Run with
+- `npm run start:ios`

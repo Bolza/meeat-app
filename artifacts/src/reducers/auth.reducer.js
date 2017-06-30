@@ -1,10 +1,10 @@
 /* eslint-disable max-len */
 import { EMAIL_CHANGED_ACTION, PASSWORD_CHANGED_ACTION, LOGIN_SUCCESS_ACTION, LOGIN_FAIL_ACTION, LOGIN_ATTEMPT_ACTION } from '../actions';
-/* eslint-enable max-len */
 const INITIAL_STATE = {
     email: '',
     password: '',
-    user: null
+    user: null,
+    error: null,
 };
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {

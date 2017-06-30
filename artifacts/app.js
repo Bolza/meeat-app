@@ -5,6 +5,8 @@ import { View } from 'react-native';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import reducers from './reducers';
+// import { Header } from './components/common';
+// import Login from './components/login.component';
 import Router from './router';
 const config = {
     // apiKey: 'AIzaSyA3D_frhPdNG2vYG0QAKMwe4-xI2K8-VyQ',
@@ -20,12 +22,12 @@ const config = {
     storageBucket: 'meat-5432f.appspot.com',
     messagingSenderId: '260439457350'
 };
-const Logger = (store) => next => action => {
+const logger = (store) => next => action => {
     console.group(action.type);
-    console.info('dispatching', action);
+    console.log('dispatching', action);
     const result = next(action);
     console.log('next state', store.getState());
-    console.groupEnd(action.type);
+    console.groupEnd();
     return result;
 };
 class App extends Component {
@@ -33,7 +35,7 @@ class App extends Component {
         firebase.initializeApp(config);
     }
     render() {
-        const store = createStore(reducers, { auth: {} }, applyMiddleware(ReduxThunk, Logger));
+        const store = createStore(reducers, { auth: {} }, applyMiddleware(ReduxThunk, logger));
         return (React.createElement(Provider, { store: store },
             React.createElement(View, { style: { flex: 1 } },
                 React.createElement(Router, null))));
