@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import MapView from 'react-native-maps';
 import { connect } from 'react-redux';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
@@ -10,11 +10,14 @@ const ZOOM_PLACE = 0.01;
 
 const LONDON = {
     latitude: 51.531, // 37.78825,
-    longitude: -0.120, //-122.4324,
+    longitude: -0.120, // -122.4324,
 };
 
-class EventCreationComponent extends Component {
-    state = {}
+interface State { [key: string]: any }
+interface Props { [key: string]: any }
+
+class EventCreationComponent extends Component<Props, State> {
+    map: any;
 
     initialRegion = {
         latitude: LONDON.latitude,
@@ -24,13 +27,13 @@ class EventCreationComponent extends Component {
     };
 
     onRegionChange(region) {
-        // console.log('onRegionChange', region);
+        console.log('onRegionChange', region);
     }
 
     animateTo({latitude, longitude}) {
         // console.log({latitude, longitude});
         this.map.animateToRegion({
-            latitude, 
+            latitude,
             longitude,
             latitudeDelta: ZOOM_PLACE,
             longitudeDelta: ZOOM_PLACE,
@@ -53,12 +56,12 @@ class EventCreationComponent extends Component {
     }
 
     onPlaceSelection(details) {
-        this.props.dispatch(new EventCreationSetLocationAction({
+        this.props.dispatch(EventCreationSetLocationAction({
             latitude: details.geometry.location.lat,
             longitude: details.geometry.location.lng
         }));
     }
-    
+
     onMapPress(e) {
         console.log(e.nativeEvent.coordinate);
     }
@@ -93,7 +96,7 @@ class EventCreationComponent extends Component {
                         rankby: 'distance',
                         types: 'establishment',
                     }}
-                    onPress={(data, details) => this.onPlaceSelection.call(this, details)}
+                    onPress={(data, details) => this.onPlaceSelection.call(this, details, data)}
                 />
             </View>
         );
@@ -119,7 +122,7 @@ const styles = StyleSheet.create({
     predefinedPlacesDescription: {
         color: '#1faadb'
     },
-});
+} as any);
 
 const mapStateToProps = (state) => {
     console.log('state', state);
