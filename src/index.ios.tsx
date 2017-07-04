@@ -3,10 +3,10 @@
 * https://github.com/facebook/react-native
 * @flow
 */
-// ANDROID
+// IOS
 
-import React, { Component } from 'react';
+// import React, { Component } from 'react';
 import { AppRegistry  } from 'react-native';
-import App from './src/app';
+import App from './app.js';
 
 AppRegistry.registerComponent('MeeatApp', () => App);

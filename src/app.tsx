@@ -6,8 +6,8 @@ import { View } from 'react-native';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import reducers from './reducers';
-import { Header } from './components/common';
-import Login from './components/login.component';
+// import { Header } from './components/common';
+// import Login from './components/login.component';
 import Router from './router';
 
  const config = {
@@ -25,12 +25,12 @@ import Router from './router';
     messagingSenderId: '260439457350'
 };
 
-const Logger = (store) => next => action => {
+const logger = (store) => next => action => {
     console.group(action.type);
-    console.info('dispatching', action);
+    console.log('dispatching', action);
     const result = next(action);
     console.log('next state', store.getState());
-    console.groupEnd(action.type);
+    console.groupEnd();
     return result;
 };
 
@@ -42,9 +42,9 @@ class App extends Component {
 
     render() {
         const store = createStore(
-            reducers, 
-            { auth: {} }, 
-            applyMiddleware(ReduxThunk, Logger)
+            reducers,
+            { auth: {} },
+            applyMiddleware(ReduxThunk, logger)
         );
 
         return (
