@@ -4,6 +4,7 @@ import MapView from 'react-native-maps';
 import { connect } from 'react-redux';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import {EventCreationSetLocationAction} from '../actions';
+import {Card, CardSection, Input} from '../components/common';
 
 const ZOOM_CITY = 0.3;
 const ZOOM_PLACE = 0.01;
@@ -27,7 +28,12 @@ class EventCreationComponent extends Component<Props, State> {
     };
 
     onRegionChange(region) {
-        console.log('onRegionChange', region);
+        console.log('onRegionChangex', region);
+    }
+
+    constructor(props) {
+        super(props);
+        this.state = {};
     }
 
     animateTo({latitude, longitude}) {
@@ -41,6 +47,7 @@ class EventCreationComponent extends Component<Props, State> {
     }
 
     componentDidUpdate() {
+        console.log(this.props)
         this.animateTo({...this.props.location});
     }
 
@@ -70,8 +77,8 @@ class EventCreationComponent extends Component<Props, State> {
         return (
             <View style={{flex: 1}}>
                 <MapView
-                    ref={ref => { this.map = ref; }}
                     style={{flex: 1}}
+                    ref={ref => { this.map = ref; }}
                     initialRegion={this.initialRegion}
                     region={this.state.location}
                     onRegionChangeComplete={this.onRegionChange}
@@ -98,6 +105,14 @@ class EventCreationComponent extends Component<Props, State> {
                     }}
                     onPress={(data, details) => this.onPlaceSelection.call(this, details, data)}
                 />
+                <Card styles={{flex: 1}}>
+                    <CardSection>
+                        <Input
+                            label='people'
+                            placeholder='How many people?'
+                        />
+                    </CardSection>
+                </Card>
             </View>
         );
     }
@@ -105,9 +120,11 @@ class EventCreationComponent extends Component<Props, State> {
 
 const styles = StyleSheet.create({
     map: {
-    ...StyleSheet.absoluteFillObject,
+    // ...StyleSheet.absoluteFillObject,
+        flex: 1
     },
     textInputContainer: {
+        flex: 1,
         backgroundColor: 'rgba(0,0,0,0)',
         borderTopWidth: 0,
         borderBottomWidth: 0
