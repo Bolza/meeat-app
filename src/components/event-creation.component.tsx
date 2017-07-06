@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
 import MapView from 'react-native-maps';
 import { connect } from 'react-redux';
+import DatePicker from 'react-native-datepicker'
+
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
-import {EventCreationSetLocationAction} from '../actions';
+import {EventCreationSetLocationAction, EventCreationSetDateAction} from '../actions';
 import {Card, CardSection, Input} from '../components/common';
 
 const ZOOM_CITY = 0.3;
@@ -19,6 +21,7 @@ interface Props { [key: string]: any }
 
 class EventCreationComponent extends Component<Props, State> {
     map: any;
+    date: string;
 
     initialRegion = {
         latitude: LONDON.latitude,
@@ -34,10 +37,10 @@ class EventCreationComponent extends Component<Props, State> {
     constructor(props) {
         super(props);
         this.state = {};
+        this.props.date = '11-11-2011';
     }
 
     animateTo({latitude, longitude}) {
-        // console.log({latitude, longitude});
         this.map.animateToRegion({
             latitude,
             longitude,
@@ -48,7 +51,8 @@ class EventCreationComponent extends Component<Props, State> {
 
     componentDidUpdate() {
         console.log(this.props)
-        this.animateTo({...this.props.location});
+        // TODO error when not setting location
+        // this.animateTo({...this.props.location});
     }
 
     composeQuery() {
@@ -69,8 +73,13 @@ class EventCreationComponent extends Component<Props, State> {
         }));
     }
 
+    // TODO should we kill the map selection?
     onMapPress(e) {
         console.log(e.nativeEvent.coordinate);
+    }
+
+    setDate(date: string) {
+        this.props.dispatch(EventCreationSetDateAction(date));
     }
 
     render() {
@@ -105,11 +114,38 @@ class EventCreationComponent extends Component<Props, State> {
                     }}
                     onPress={(data, details) => this.onPlaceSelection.call(this, details, data)}
                 />
-                <Card styles={{flex: 1}}>
+                <Card style={{flex: 1}}>
                     <CardSection>
                         <Input
                             label='people'
                             placeholder='How many people?'
+                            onChangeText={text => this.setDate(text)}
+                            value={this.props.date}
+                        />
+                    </CardSection>
+                    <CardSection>
+                        <DatePicker
+                            style={{width: 200}}
+                            date={this.props.date}
+                            mode='date'
+                            placeholder='select date'
+                            format='DD-MM-YYYY'
+                            minDate='2016-05-01'
+                            maxDate='2016-06-01'
+                            confirmBtnText='Confirm'
+                            cancelBtnText='Cancel'
+                            customStyles={{
+                                dateIcon: {
+                                    display: 'none'
+                                },
+                                dateInput: {
+                                    borderWidth: 0,
+                                    flex: 1,
+                                    alignSelf: 'flex-end'
+                                }
+                                // ... You can check the source to find the other keys.
+                            }}
+                            onDateChange={date => this.setDate(date)}
                         />
                     </CardSection>
                 </Card>

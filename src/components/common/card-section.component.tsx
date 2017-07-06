@@ -9,7 +9,7 @@ class CardSection extends Component<Props, State> {
 
     render() {
         return (
-             <View style={[styles.container, this.props.styles]}>
+            <View style={[styles.container, this.props.styles] as any}>
                 {this.props.children}
             </View>
         );
