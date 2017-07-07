@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import MapView from 'react-native-maps';
 import { connect } from 'react-redux';
 import DatePicker from 'react-native-datepicker'
 
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import {EventCreationSetLocationAction, EventCreationSetDateAction} from '../actions';
-import {Card, CardSection, Input} from '../components/common';
+import {Card, CardSection, Input, Stepper} from '../components/common';
 
 const ZOOM_CITY = 0.3;
 const ZOOM_PLACE = 0.01;
@@ -115,6 +115,15 @@ class EventCreationComponent extends Component<Props, State> {
                     onPress={(data, details) => this.onPlaceSelection.call(this, details, data)}
                 />
                 <Card style={{flex: 1}}>
+                    <CardSection>
+                        <Text style={{flex: 1}}>How Many People?</Text>
+                        <Stepper
+                            style={{width: 120, borderWidth: 1}}
+                            startFrom={5}
+                            min={2}
+                            max={20}
+                        />
+                    </CardSection>
                     <CardSection>
                         <Input
                             label='people'

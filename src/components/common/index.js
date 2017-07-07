@@ -4,3 +4,4 @@ export * from './card-section.component';
 export * from './input.component';
 export * from './spinner.component';
 export * from './container.component';
+export * from './stepper.component';
