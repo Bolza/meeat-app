@@ -39,12 +39,16 @@ class Stepper extends Component<Props, State> {
                 <Text style={styles.number}>{this.state.counter}</Text>
                 <View style={styles.buttonContainer}>
                     <Button
+                        large
                         buttonStyle={styles.button}
+                        underlayColor='#000'
                         icon={{name: 'keyboard-arrow-up'}}
                         onPress={() => this.increase()}
                     />
                     <Button
+                        large
                         buttonStyle={styles.button}
+                        underlayColor='#000'
                         icon={{name: 'keyboard-arrow-down'}}
                         onPress={() => this.decrease()}
                     />
@@ -61,19 +65,19 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     button: {
-        width: 32,
-        height: 32,
+        minWidth: 42,
+        minHeight: 42,
         padding: 0,
-        paddingLeft: 6,
+        paddingLeft: 7,
         margin: 0
     },
     number: {
-        fontSize: 26
+        flex: 1,
+        fontSize: 28
     },
     buttonContainer: {
-        alignSelf: 'flex-end',
-        margin: 0
-    }
+        flex: 1,
+    },
 } as any);
 
 export { Stepper };

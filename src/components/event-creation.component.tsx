@@ -116,9 +116,9 @@ class EventCreationComponent extends Component<Props, State> {
                 />
                 <Card style={{flex: 1}}>
                     <CardSection>
-                        <Text style={{flex: 1}}>How Many People?</Text>
+                        <Text style={{flex: 1, fontSize: 18, alignSelf: 'center'}}>How Many People?</Text>
                         <Stepper
-                            style={{width: 120, borderWidth: 1}}
+                            style={{width: 120}}
                             startFrom={5}
                             min={2}
                             max={20}
@@ -126,8 +126,8 @@ class EventCreationComponent extends Component<Props, State> {
                     </CardSection>
                     <CardSection>
                         <Input
-                            label='people'
-                            placeholder='How many people?'
+                            label='experiment'
+                            placeholder='experiment'
                             onChangeText={text => this.setDate(text)}
                             value={this.props.date}
                         />
