@@ -14,14 +14,23 @@ const ZOOM_PLACE = 0.01;
 const LONDON = {
     latitude: 51.531, // 37.78825,
     longitude: -0.120, // -122.4324,
+    latitudeDelta: ZOOM_CITY,
+    longitudeDelta: ZOOM_CITY,
 };
 
-interface State { [key: string]: any }
+interface State {
+    date: string;
+    location: {
+        latitude: number,
+        longitude: number,
+        latitudeDelta: number,
+        longitudeDelta: number,
+    };
+}
 interface Props { [key: string]: any }
 
 class EventCreationComponent extends Component<Props, State> {
     map: any;
-    date: string;
 
     initialRegion = {
         latitude: LONDON.latitude,
@@ -36,8 +45,10 @@ class EventCreationComponent extends Component<Props, State> {
 
     constructor(props) {
         super(props);
-        this.state = {};
-        this.props.date = '11-11-2011';
+        this.state = {
+            location: LONDON,
+            date: '11/11/2011'
+        };
     }
 
     animateTo({latitude, longitude}) {
@@ -55,18 +66,22 @@ class EventCreationComponent extends Component<Props, State> {
         // this.animateTo({...this.props.location});
     }
 
-    composeQuery() {
+    composeLocalQuery() {
         return {
             // available options: https://developers.google.com/places/web-service/autocomplete
             key: 'AIzaSyBvTWMfJksaVNBhMnYpuNddgunzP1KUMIw',
             language: 'en', // language of the results
             types: 'establishment',
-            location: {latitude: LONDON.latitude, longitude: LONDON.longitude},
+            location: {
+                latitude: this.state.location.latitude,
+                longitude: this.state.location.longitude
+            },
             components: 'country:uk|country:it'
         };
     }
 
     onPlaceSelection(details) {
+        console.log('onPlaceSelection', details);
         this.props.dispatch(EventCreationSetLocationAction({
             latitude: details.geometry.location.lat,
             longitude: details.geometry.location.lng
@@ -79,7 +94,8 @@ class EventCreationComponent extends Component<Props, State> {
     }
 
     setDate(date: string) {
-        this.props.dispatch(EventCreationSetDateAction(date));
+        this.setState({date});
+        // this.props.dispatch(EventCreationSetDateAction(date));
     }
 
     render() {
@@ -106,7 +122,7 @@ class EventCreationComponent extends Component<Props, State> {
                     }}
                     currentLocation
                     debounce={200}
-                    query={this.composeQuery()}
+                    query={this.composeLocalQuery()}
                     GooglePlacesSearchQuery={{
                         // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
                         rankby: 'distance',
@@ -129,18 +145,18 @@ class EventCreationComponent extends Component<Props, State> {
                             label='experiment'
                             placeholder='experiment'
                             onChangeText={text => this.setDate(text)}
-                            value={this.props.date}
+                            value={this.state.date}
                         />
                     </CardSection>
                     <CardSection>
                         <DatePicker
                             style={{width: 200}}
-                            date={this.props.date}
+                            date={this.state.date}
                             mode='date'
                             placeholder='select date'
                             format='DD-MM-YYYY'
-                            minDate='2016-05-01'
-                            maxDate='2016-06-01'
+                            minDate='01-05-2017'
+                            maxDate='01-05-2018'
                             confirmBtnText='Confirm'
                             cancelBtnText='Cancel'
                             customStyles={{
