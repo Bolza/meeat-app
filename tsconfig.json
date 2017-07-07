@@ -11,9 +11,9 @@
     "preserveConstEnums": true,
     "allowJs": true,
     "sourceMap": true,
-    "noImplicitReturns": true,
-    "noUnusedParameters": true,
-    "noUnusedLocals": true
+    "noImplicitReturns": false,
+    "noUnusedParameters": false,
+    "noUnusedLocals": false
   },
   "filesGlob": [
     "typings/index.d.ts",

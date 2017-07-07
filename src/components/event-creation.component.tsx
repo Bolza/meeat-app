@@ -141,27 +141,22 @@ class EventCreationComponent extends Component<Props, State> {
                         />
                     </CardSection>
                     <CardSection>
-                        <Input
-                            label='experiment'
-                            placeholder='experiment'
-                            onChangeText={text => this.setDate(text)}
-                            value={this.state.date}
-                        />
-                    </CardSection>
-                    <CardSection>
+                        <Text style={{flex: 1, fontSize: 18, alignSelf: 'center', color: '#333'}}>When?</Text>
                         <DatePicker
-                            style={{width: 200}}
+                            style={{flex: 1}}
                             date={this.state.date}
-                            mode='date'
+                            mode='time'
                             placeholder='select date'
-                            format='DD-MM-YYYY'
-                            minDate='01-05-2017'
-                            maxDate='01-05-2018'
+                            format='hh:mm'
+                            is24Hour={true}
                             confirmBtnText='Confirm'
                             cancelBtnText='Cancel'
                             customStyles={{
                                 dateIcon: {
                                     display: 'none'
+                                },
+                                dateText: {
+                                    fontSize: 24,
                                 },
                                 dateInput: {
                                     borderWidth: 0,
