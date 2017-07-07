@@ -55,7 +55,8 @@ class CreateEmployee extends Component {
                 <CardSection>
                     <Button 
                         onPress={this.onButtonPress.bind(this)}
-                        title="Create" placeholder="Jane" />
+                        title="Create" placeholder="Jane" 
+                    />
                 </CardSection>
             </Card>
         );

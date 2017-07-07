@@ -9,3 +9,6 @@ To emulate on Android:
 
 Run with
 - `npm run start:ios`
+
+Android Troubleshooting
+- see react-native-vector-icons installation
