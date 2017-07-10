@@ -1,7 +1,7 @@
 import firebase from 'firebase';
 // import { values } from 'lodash';
 import {Actions} from 'react-native-router-flux';
-import { Event, Location} from '../../types';
+import { EventCreationType, Location} from '../../types';
 
 export const EVENT_CREATION_SET_LOCATION_ACTION_TYPE = '[EventCreation] SetLocation';
 export const EventCreationSetLocationAction = (payload: Location) => {
@@ -20,7 +20,7 @@ export const EventCreationSetDateAction = (payload) => {
 };
 
 export const CREATE_EVENT_ACTION = '[EventCreation] Calling Firebase API';
-export const CreateEventAction = (payload: Event) => {
+export const CreateEventAction = (payload: EventCreationType) => {
     return (dispatch) => {
         dispatch({ type: CREATE_EVENT_ACTION });
         firebase.database()
@@ -35,15 +35,15 @@ export const CreateEventAction = (payload: Event) => {
     };
 };
 
-export const CREATE_EVENT_SUCCESS_ACTION = '[EventCreation] Create Event Success';
-export const CreateEventSuccessAction = (event: Event) => {
+export const CREATE_EVENT_SUCCESS_ACTION = '[EventCreation] Create EventCreationType Success';
+export const CreateEventSuccessAction = (event: EventCreationType) => {
     return (dispatch) => {
         dispatch({ type: CREATE_EVENT_SUCCESS_ACTION });
         Actions.EventList({type: 'reset'});
     };
 };
 
-export const CREATE_EVENT_FAIL_ACTION = '[EventCreation] Create Event Fail';
+export const CREATE_EVENT_FAIL_ACTION = '[EventCreation] Create EventCreationType Fail';
 export const CreateEventFailAction = (error) => {
     return {
         type: CREATE_EVENT_FAIL_ACTION,
@@ -51,8 +51,8 @@ export const CreateEventFailAction = (error) => {
     };
 };
 
-const eventObjectFactory = (originalPayload: Event): Event => {
-    const newPayload: Event = {
+const eventObjectFactory = (originalPayload: EventCreationType): EventCreationType => {
+    const newPayload: EventCreationType = {
         ...originalPayload,
         createdAt: firebase.database.ServerValue.TIMESTAMP,
         owner: firebase.auth().currentUser,

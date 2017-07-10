@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import MapView from 'react-native-maps';
-import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
+import {GooglePlacesAutocomplete} from '../common/GooglePlacesAutocomplete.js';
 
 import {EventCreationSetLocationAction } from './event-creation.actions';
 import { GeoRegion } from '../../types';
@@ -76,6 +76,7 @@ class EventLocation extends Component<Props, State> {
                         rankby: 'distance',
                         types: 'establishment',
                     }}
+                    onListVisibility={(visible) => this.onListVisibility.call(this, visible)}
                     onPress={(data, details) => this.onPlaceSelection.call(this, details, data)}
                 />
             </View>
@@ -84,6 +85,12 @@ class EventLocation extends Component<Props, State> {
 
     private onRegionChange(region) {
         // console.log('onRegionChangex', region);
+    }
+
+    private onListVisibility(visible) {
+        if (this.props.onListVisibility) {
+            this.props.onListVisibility(visible);
+        }
     }
 
     private composeLocalQuery() {
@@ -101,11 +108,15 @@ class EventLocation extends Component<Props, State> {
     }
 
     private onPlaceSelection(details) {
-        console.log('onPlaceSelection', details);
+        // console.log('onPlaceSelection', details);
         this.props.dispatch(EventCreationSetLocationAction({
             latitude: details.geometry.location.lat,
             longitude: details.geometry.location.lng,
-            id: details.place_id
+            id: details.place_id,
+            name: details.name,
+            address: details.formatted_address,
+            phone: details.formatted_phone_number,
+            rating: details.rating,
         }));
     }
 

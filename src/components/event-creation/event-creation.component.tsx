@@ -3,10 +3,12 @@ import { View, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
 import DatePicker from 'react-native-datepicker'
 import { Button } from 'react-native-elements'
+import HideableView from 'react-native-hideable-view';
+import {get} from 'lodash';
 
 import { EventCreationSetDateAction, CreateEventAction} from './event-creation.actions';
 import {Card, CardSection, Input, Stepper} from '../common';
-import { Event, GeoRegion } from '../../types';
+import { EventCreationType, GeoRegion } from '../../types';
 import EventLocation from './event-location.component';
 import { LONDON } from './event-location.component';
 
@@ -14,7 +16,8 @@ const DEFAULT_PEOPLE = 5;
 const DEFAULT_DATE = '11:30'; // Date.now().toString();
 
 interface State {
-    event: Event;
+    event: EventCreationType;
+    listVisible: boolean;
 }
 interface Props { [key: string]: any }
 
@@ -22,8 +25,12 @@ class EventCreationComponent extends Component<Props, State> {
     constructor(props) {
         super(props);
         this.state = {
+            listVisible: false,
             event: {
+                details: null,
                 people: DEFAULT_PEOPLE,
+                // TODO location has many more data than this... should we change with another obj?
+                // TODO Yeah returning from the action set location
                 location: LONDON,
                 date: DEFAULT_DATE
             }
@@ -46,8 +53,24 @@ class EventCreationComponent extends Component<Props, State> {
     render() {
         return (
             <View style={{flex: 1}}>
-                <EventLocation style={{flex: 1}} />
-                <Card style={{flex: 1}}>
+                <EventLocation
+                    style={{flex: 1}}
+                    onListVisibility={(visible) => this.onListVisibility.call(this, visible)}
+                />
+                <HideableView visible={!this.state.listVisible}>
+                <Card>
+                    <CardSection>
+                        <Text style={styles.label}>{get(this.state.event.details.name)}</Text>
+                    </CardSection>
+                    <CardSection>
+                        <Text style={styles.label}>{get(this.state, 'event.details.address')}</Text>
+                    </CardSection>
+                    <CardSection>
+                        <Text style={styles.label}>{get(this.state, 'event.details.rating')}</Text>
+                    </CardSection>
+                    <CardSection>
+                        <Text style={styles.label}>{get(this.state, 'event.details.phone')}</Text>
+                    </CardSection>
                     <CardSection>
                         <Text style={styles.label}>How Many People?</Text>
                         <Stepper
@@ -85,19 +108,25 @@ class EventCreationComponent extends Component<Props, State> {
                             onDateChange={date => this.setDate(date)}
                         />
                     </CardSection>
-                    <CardSection style={{flex: 1}}>
+                    <CardSection>
                         <Button
                             raised
                             containerViewStyle={styles.creationButton}
-                            backgroundColor="#1faadb"
+                            backgroundColor='#1faadb'
                             icon={{name: 'done'}}
                             onPress={() => this.send()}
                         />
                     </CardSection>
                 </Card>
+                </HideableView>
             </View>
         );
     }
+
+    private onListVisibility(visible) {
+        this.setState({listVisible: visible});
+    }
+
 }
 
 const styles = StyleSheet.create({

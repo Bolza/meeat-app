@@ -1,19 +1,24 @@
 import { EVENT_CREATION_SET_LOCATION_ACTION_TYPE, EVENT_CREATION_SET_DATE_ACTION_TYPE } from './event-creation.actions';
-
-export interface EventCreationType {
-    location: {
-        latitude: string,
-        longitude: string
-    },
-    date: string
-}
+import { EventCreationType } from '../../types';
 
 const INITIAL_STATE: EventCreationType = {
+    people: 0,
+    date: null,
     location: {
         latitude: null,
         longitude: null,
+        latitudeDelta: null,
+        longitudeDelta: null,
     },
-    date: null
+    details: {
+        latitude: null,
+        longitude: null,
+        id: null,
+        name: null,
+        address: null,
+        rating: null,
+        phone: null,
+    }
 };
 
 export default (state = INITIAL_STATE, action): EventCreationType => {
@@ -22,6 +27,7 @@ export default (state = INITIAL_STATE, action): EventCreationType => {
             return {
                 ...state,
                 location: action.payload,
+                details: action.payload,
             };
         case EVENT_CREATION_SET_DATE_ACTION_TYPE:
             return {
