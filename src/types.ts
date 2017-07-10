@@ -12,3 +12,9 @@ export interface GeoRegion {
     latitudeDelta: number;
     longitudeDelta: number;
 }
+
+export interface Location {
+    latitude: number;
+    longitude: number;
+    id: string;
+}

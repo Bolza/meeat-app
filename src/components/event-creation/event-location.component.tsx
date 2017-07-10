@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import MapView from 'react-native-maps';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 
-import {EventCreationSetLocationAction, EventCreationSetDateAction, CreateEventAction} from './event-creation.actions';
+import {EventCreationSetLocationAction } from './event-creation.actions';
 import { GeoRegion } from '../../types';
 
 interface State { current: GeoRegion }
@@ -13,7 +13,7 @@ interface Props { [key: string]: any }
 const ZOOM_CITY = 0.3;
 const ZOOM_PLACE = 0.001;
 
-const LONDON: GeoRegion = {
+export const LONDON: GeoRegion = {
     latitude: 51.531, // 37.78825,
     longitude: -0.120, // -122.4324,
     latitudeDelta: ZOOM_CITY,
@@ -37,14 +37,13 @@ class EventLocation extends Component<Props, State> {
         };
     }
 
-    componentDidUpdate() {
-        console.log('componentDidUpdate', this.state)
-        // TODO error when not setting location
-        this.animateTo(this.state.current);
-    }
     componentWillReceiveProps(nextProps) {
         // console.log('componentWillReceiveProps', this.props, nextProps)
+        if (this.props.current.latitude !== nextProps.current.latitude ) {
+            this.animateTo(nextProps.current);
+        };
     }
+
     render() {
         return (
             <View style={[styles.container, this.props.style] as any}>
@@ -52,13 +51,12 @@ class EventLocation extends Component<Props, State> {
                     style={{flex: 1}}
                     ref={ref => { this.map = ref; }}
                     initialRegion={this.initialRegion}
-                    region={this.state.current}
                     onRegionChangeComplete={this.onRegionChange}
                     onPress={this.onMapPress}
                 />
                 <GooglePlacesAutocomplete
                     textInputProps={{
-                        "autoCorrect": false
+                        'autoCorrect': false
                     }}
                     placeholder='Enter Location'
                     minLength={3}
@@ -103,10 +101,11 @@ class EventLocation extends Component<Props, State> {
     }
 
     private onPlaceSelection(details) {
-        // console.log('onPlaceSelection', details);
+        console.log('onPlaceSelection', details);
         this.props.dispatch(EventCreationSetLocationAction({
             latitude: details.geometry.location.lat,
-            longitude: details.geometry.location.lng
+            longitude: details.geometry.location.lng,
+            id: details.place_id
         }));
     }
 
@@ -116,16 +115,14 @@ class EventLocation extends Component<Props, State> {
     }
 
     private animateTo(coords: GeoRegion) {
-        console.log('animateTo', coords);
         const {latitude, longitude} = coords;
         this.map.animateToRegion({
             latitude,
             longitude,
             latitudeDelta: ZOOM_PLACE,
             longitudeDelta: ZOOM_PLACE,
-        }, 500);
+        }, 700);
     }
-
 }
 
 const styles = StyleSheet.create({
@@ -134,10 +131,10 @@ const styles = StyleSheet.create({
         flex: 1
     },
     textInputContainer: {
-        flex: 1,
         backgroundColor: 'rgba(0,0,0,0)',
         borderTopWidth: 0,
-        borderBottomWidth: 0
+        borderBottomWidth: 0,
+        borderWidth: 1
     },
     textInput: {
         marginLeft: 0,

@@ -4,20 +4,11 @@ import { connect } from 'react-redux';
 import DatePicker from 'react-native-datepicker'
 import { Button } from 'react-native-elements'
 
-import {EventCreationSetLocationAction, EventCreationSetDateAction, CreateEventAction} from './event-creation.actions';
+import { EventCreationSetDateAction, CreateEventAction} from './event-creation.actions';
 import {Card, CardSection, Input, Stepper} from '../common';
 import { Event, GeoRegion } from '../../types';
 import EventLocation from './event-location.component';
-
-const ZOOM_CITY = 0.3;
-const ZOOM_PLACE = 0.01;
-
-const LONDON: GeoRegion = {
-    latitude: 51.531, // 37.78825,
-    longitude: -0.120, // -122.4324,
-    latitudeDelta: ZOOM_CITY,
-    longitudeDelta: ZOOM_CITY,
-};
+import { LONDON } from './event-location.component';
 
 const DEFAULT_PEOPLE = 5;
 const DEFAULT_DATE = '11:30'; // Date.now().toString();
