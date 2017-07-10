@@ -1,10 +1,8 @@
-export interface EventCreationType {
+export interface EventCreationState {
     date: string;
     location: GeoRegion;
     details: LocationDetails | any;
     people: number;
-    createdAt?: any;
-    owner?: any;
 }
 
 export interface GeoRegion {

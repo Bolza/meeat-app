@@ -1,7 +1,7 @@
 import firebase from 'firebase';
 // import { values } from 'lodash';
 import {Actions} from 'react-native-router-flux';
-import { EventCreationType, LocationDetails} from '../../types';
+import { EventCreationState, LocationDetails} from '../../types';
 
 export const EVENT_CREATION_SET_LOCATION_ACTION_TYPE = '[EventCreation] SetLocation';
 export const EventCreationSetLocationAction = (payload: LocationDetails) => {
@@ -35,15 +35,15 @@ export const CreateEventAction = (payload) => {
     };
 };
 
-export const CREATE_EVENT_SUCCESS_ACTION = '[EventCreation] Create EventCreationType Success';
-export const CreateEventSuccessAction = (event: EventCreationType) => {
+export const CREATE_EVENT_SUCCESS_ACTION = '[EventCreation] Create Event Success';
+export const CreateEventSuccessAction = (event) => {
     return (dispatch) => {
         dispatch({ type: CREATE_EVENT_SUCCESS_ACTION });
         Actions.EventList({type: 'reset'});
     };
 };
 
-export const CREATE_EVENT_FAIL_ACTION = '[EventCreation] Create EventCreationType Fail';
+export const CREATE_EVENT_FAIL_ACTION = '[EventCreation] Create Event Fail';
 export const CreateEventFailAction = (error) => {
     return {
         type: CREATE_EVENT_FAIL_ACTION,
@@ -51,8 +51,8 @@ export const CreateEventFailAction = (error) => {
     };
 };
 
-const eventObjectFactory = (originalPayload: EventCreationType): EventCreationType => {
-    const newPayload: EventCreationType = {
+const eventObjectFactory = (originalPayload: EventCreationState): any => {
+    const newPayload = {
         ...originalPayload,
         createdAt: firebase.database.ServerValue.TIMESTAMP,
         owner: firebase.auth().currentUser,

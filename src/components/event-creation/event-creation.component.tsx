@@ -3,12 +3,11 @@ import { View, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
 import DatePicker from 'react-native-datepicker'
 import { Button } from 'react-native-elements'
-import HideableView from 'react-native-hideable-view';
-import {get} from 'lodash';
+import { Fade } from '../common/'
 
 import { EventCreationSetDateAction, CreateEventAction} from './event-creation.actions';
 import {Card, CardSection, Input, Stepper} from '../common';
-import { EventCreationType, GeoRegion } from '../../types';
+import { GeoRegion } from '../../types';
 import EventLocation from './event-location.component';
 import { LONDON } from './event-location.component';
 import {INITIAL_STATE} from './event-creation.reducer';
@@ -25,17 +24,12 @@ class EventCreationComponent extends Component<Props, State> {
         this.state = {
             people: DEFAULT_PEOPLE,
             location: LONDON,
-            details: {...INITIAL_STATE.details},
-            date: DEFAULT_DATE
+            details: {},
+            date: DEFAULT_DATE,
         };
     }
 
     setDate(date: string) {
-        const curEvent = {
-            ...this.state,
-            date
-        };
-        this.setState({date: date});
         this.props.dispatch(EventCreationSetDateAction(date));
     }
 
@@ -50,19 +44,19 @@ class EventCreationComponent extends Component<Props, State> {
                     style={{flex: 1}}
                     onListVisibility={(visible) => this.onListVisibility.call(this, visible)}
                 />
-                <HideableView visible={!this.state.listVisible}>
+                <Fade visible={this.props.listVisible}>  
                 <Card>
                     <CardSection>
-                        <Text style={styles.label}>{this.details().name}</Text>
+                        <Text style={styles.details}>{this.props.details.name}</Text>
                     </CardSection>
                     <CardSection>
-                        <Text style={styles.label}>{this.details().address}</Text>
+                        <Text style={styles.details}>{this.props.details.address}</Text>
                     </CardSection>
                     <CardSection>
-                        <Text style={styles.label}>{this.details().rating}</Text>
+                        <Text style={styles.details}>{this.props.details.rating}</Text>
                     </CardSection>
                     <CardSection>
-                        <Text style={styles.label}>{this.details().phone}</Text>
+                        <Text style={styles.details}>{this.props.details.phone}</Text>
                     </CardSection>
                     <CardSection>
                         <Text style={styles.label}>How Many People?</Text>
@@ -77,7 +71,7 @@ class EventCreationComponent extends Component<Props, State> {
                         <Text style={styles.label}>When?</Text>
                         <DatePicker
                             style={{flex: 1}}
-                            date={this.state.date}
+                            date={this.props.date}
                             mode='time'
                             placeholder='select date'
                             format='hh:mm'
@@ -111,7 +105,7 @@ class EventCreationComponent extends Component<Props, State> {
                         />
                     </CardSection>
                 </Card>
-                </HideableView>
+                </Fade>
             </View>
         );
     }
@@ -119,12 +113,6 @@ class EventCreationComponent extends Component<Props, State> {
     private onListVisibility(visible) {
         this.setState({listVisible: visible});
     }
-
-    private details() {
-        // console.log(this.state)
-        return this.state.details;
-    }
-
 }
 
 const styles = StyleSheet.create({
@@ -138,13 +126,15 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 0,
         margin: 0
+    },
+    details: {
+        fontSize: 11
     }
 } as any);
 
 const mapStateToProps = (state) => {
-    const {details, people, date} = state.eventCreation
-    console.log('mapStateToProps', details);
-    return {details, people, date};
+    console.log('mapStateToProps', state.eventCreation);
+    return {...state.eventCreation};
 };
 
 export default connect(mapStateToProps)(EventCreationComponent);
