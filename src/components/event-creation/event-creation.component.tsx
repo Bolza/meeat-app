@@ -3,29 +3,28 @@ import { View, StyleSheet, Text } from 'react-native';
 import MapView from 'react-native-maps';
 import { connect } from 'react-redux';
 import DatePicker from 'react-native-datepicker'
+import { Button } from 'react-native-elements'
 
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
-import {EventCreationSetLocationAction, EventCreationSetDateAction} from '../actions';
-import {Card, CardSection, Input, Stepper} from '../components/common';
+import {EventCreationSetLocationAction, EventCreationSetDateAction, CreateEventAction} from './event-creation.actions';
+import {Card, CardSection, Input, Stepper} from '../common';
+import { Event, GeoRegion } from '../../types';
 
 const ZOOM_CITY = 0.3;
 const ZOOM_PLACE = 0.01;
 
-const LONDON = {
+const LONDON: GeoRegion = {
     latitude: 51.531, // 37.78825,
     longitude: -0.120, // -122.4324,
     latitudeDelta: ZOOM_CITY,
     longitudeDelta: ZOOM_CITY,
 };
 
+const DEFAULT_PEOPLE = 5;
+const DEFAULT_DATE = '11:30'; // Date.now().toString();
+
 interface State {
-    date: string;
-    location: {
-        latitude: number,
-        longitude: number,
-        latitudeDelta: number,
-        longitudeDelta: number,
-    };
+    event: Event;
 }
 interface Props { [key: string]: any }
 
@@ -40,14 +39,17 @@ class EventCreationComponent extends Component<Props, State> {
     };
 
     onRegionChange(region) {
-        console.log('onRegionChangex', region);
+        // console.log('onRegionChangex', region);
     }
 
     constructor(props) {
         super(props);
         this.state = {
-            location: LONDON,
-            date: '11/11/2011'
+            event: {
+                people: DEFAULT_PEOPLE,
+                location: LONDON,
+                date: DEFAULT_DATE
+            }
         };
     }
 
@@ -61,7 +63,7 @@ class EventCreationComponent extends Component<Props, State> {
     }
 
     componentDidUpdate() {
-        console.log(this.props)
+        // console.log(this.props)
         // TODO error when not setting location
         // this.animateTo({...this.props.location});
     }
@@ -73,8 +75,8 @@ class EventCreationComponent extends Component<Props, State> {
             language: 'en', // language of the results
             types: 'establishment',
             location: {
-                latitude: this.state.location.latitude,
-                longitude: this.state.location.longitude
+                latitude: this.state.event.location.latitude,
+                longitude: this.state.event.location.longitude
             },
             components: 'country:uk|country:it'
         };
@@ -94,8 +96,16 @@ class EventCreationComponent extends Component<Props, State> {
     }
 
     setDate(date: string) {
-        this.setState({date});
+        const curEvent = {
+            ...this.state.event,
+            date
+        }
+        this.setState({event: curEvent});
         // this.props.dispatch(EventCreationSetDateAction(date));
+    }
+
+    send() {
+        this.props.dispatch(CreateEventAction(this.state as any));
     }
 
     render() {
@@ -105,7 +115,7 @@ class EventCreationComponent extends Component<Props, State> {
                     style={{flex: 1}}
                     ref={ref => { this.map = ref; }}
                     initialRegion={this.initialRegion}
-                    region={this.state.location}
+                    region={this.state.event.location}
                     onRegionChangeComplete={this.onRegionChange}
                     onPress={this.onMapPress}
                 />
@@ -132,19 +142,19 @@ class EventCreationComponent extends Component<Props, State> {
                 />
                 <Card style={{flex: 1}}>
                     <CardSection>
-                        <Text style={{flex: 1, fontSize: 18, alignSelf: 'center'}}>How Many People?</Text>
+                        <Text style={styles.label}>How Many People?</Text>
                         <Stepper
                             style={{width: 120}}
-                            startFrom={5}
+                            startFrom={DEFAULT_PEOPLE}
                             min={2}
                             max={20}
                         />
                     </CardSection>
                     <CardSection>
-                        <Text style={{flex: 1, fontSize: 18, alignSelf: 'center', color: '#333'}}>When?</Text>
+                        <Text style={styles.label}>When?</Text>
                         <DatePicker
                             style={{flex: 1}}
-                            date={this.state.date}
+                            date={this.state.event.date}
                             mode='time'
                             placeholder='select date'
                             format='hh:mm'
@@ -166,6 +176,15 @@ class EventCreationComponent extends Component<Props, State> {
                                 // ... You can check the source to find the other keys.
                             }}
                             onDateChange={date => this.setDate(date)}
+                        />
+                    </CardSection>
+                    <CardSection>
+                        <Button
+                            buttonStyle={styles.creationButton}
+                            large
+                            underlayColor='#000'
+                            icon={{name: 'keyboard-arrow-up'}}
+                            onPress={() => this.send()}
                         />
                     </CardSection>
                 </Card>
@@ -195,6 +214,15 @@ const styles = StyleSheet.create({
     predefinedPlacesDescription: {
         color: '#1faadb'
     },
+    label: {
+        flex: 1,
+        fontSize: 18,
+        alignSelf: 'center',
+        color: '#333'
+    },
+    creationButton: {
+        alignSelf: 'center'
+    }
 } as any);
 
 const mapStateToProps = (state) => {

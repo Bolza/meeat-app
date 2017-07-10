@@ -4,8 +4,8 @@ import { COLOR, ThemeProvider, Button } from 'react-native-material-ui';
 import { Text, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 
-import { EmailChangedAction, PasswordChangedAction, LoginSuccessAction, LoginAttemptAction } from '../actions/auth.actions';
-import { Card, CardSection, Input, Spinner, Container } from './common';
+import { EmailChangedAction, PasswordChangedAction, LoginSuccessAction, LoginAttemptAction } from './auth.actions';
+import { Card, CardSection, Input, Spinner, Container } from '../common/index';
 /* eslint-enable max-len */
 
 class Login extends Component {

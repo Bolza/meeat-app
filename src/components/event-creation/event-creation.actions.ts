@@ -1,7 +1,7 @@
 import firebase from 'firebase';
 // import { values } from 'lodash';
 import {Actions} from 'react-native-router-flux';
-import { Event } from '../types';
+import { Event } from '../../types';
 
 export const EVENT_CREATION_SET_LOCATION_ACTION_TYPE = '[EventCreation] SetLocation';
 export const EventCreationSetLocationAction = ({latitude, longitude}) => {
@@ -24,9 +24,14 @@ export const CreateEventAction = (payload: Event) => {
     return (dispatch) => {
         dispatch({ type: CREATE_EVENT_ACTION });
         const user = firebase.auth().currentUser;
-        firebase.database().ref(`/users/${user.uid}/events`)
+        firebase.database()
+            .ref()
+            .child('app/events')
             .push(payload)
-            .then(res => dispatch(CreateEventSuccessAction(res)))
+            .then(res => {
+                console.log(res)
+                // dispatch(CreateEventSuccessAction(res);
+            })
             .catch(err => dispatch(CreateEventFailAction(err)));
     };
 };

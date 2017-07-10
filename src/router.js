@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Scene, Router, Actions } from 'react-native-router-flux';
-import Login from './components/login.component';
+import Login from './components/login/login.component';
 import EmployeeListComponent from './components/employee-list.component';
 import CreateEmployee from './components/create-employee.component';
-import EventCreationComponent from './components/event-creation.component';
+import EventCreationComponent from './components/event-creation/event-creation.component';
 
 const RouterComponent = () => {
     return (
