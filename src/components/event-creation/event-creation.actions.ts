@@ -19,15 +19,14 @@ export const EventCreationSetDateAction = (payload) => {
     };
 };
 
-export const CREATE_EVENT_ACTION = 'Create Event';
+export const CREATE_EVENT_ACTION = '[EventCreation] Calling Firebase API';
 export const CreateEventAction = (payload: Event) => {
     return (dispatch) => {
         dispatch({ type: CREATE_EVENT_ACTION });
-        const user = firebase.auth().currentUser;
         firebase.database()
             .ref()
             .child('app/events')
-            .push(payload)
+            .push(eventObjectFactory(payload))
             .then(res => {
                 console.log(res)
                 // dispatch(CreateEventSuccessAction(res);
@@ -36,7 +35,7 @@ export const CreateEventAction = (payload: Event) => {
     };
 };
 
-export const CREATE_EVENT_SUCCESS_ACTION = 'Create Event Success';
+export const CREATE_EVENT_SUCCESS_ACTION = '[EventCreation] Create Event Success';
 export const CreateEventSuccessAction = (event: Event) => {
     return (dispatch) => {
         dispatch({ type: CREATE_EVENT_SUCCESS_ACTION });
@@ -44,10 +43,19 @@ export const CreateEventSuccessAction = (event: Event) => {
     };
 };
 
-export const CREATE_EVENT_FAIL_ACTION = 'Create Event Fail';
+export const CREATE_EVENT_FAIL_ACTION = '[EventCreation] Create Event Fail';
 export const CreateEventFailAction = (error) => {
     return {
         type: CREATE_EVENT_FAIL_ACTION,
         payload: error
     };
+};
+
+const eventObjectFactory = (originalPayload: Event): Event => {
+    const newPayload: Event = {
+        ...originalPayload,
+        createdAt: firebase.database.ServerValue.TIMESTAMP,
+        owner: firebase.auth().currentUser,
+    };
+    return newPayload;
 };
