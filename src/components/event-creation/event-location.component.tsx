@@ -6,6 +6,7 @@ import {GooglePlacesAutocomplete} from '../common/GooglePlacesAutocomplete.js';
 
 import {EventCreationSetLocationAction } from './event-creation.actions';
 import { GeoRegion } from '../../types';
+import {INITIAL_STATE} from './event-creation.reducer';
 
 interface State { current: GeoRegion }
 interface Props { [key: string]: any }

@@ -1,7 +1,7 @@
 export interface EventCreationType {
     date: string;
     location: GeoRegion;
-    details: Location;
+    details: LocationDetails | any;
     people: number;
     createdAt?: any;
     owner?: any;
@@ -10,11 +10,11 @@ export interface EventCreationType {
 export interface GeoRegion {
     latitude: number;
     longitude: number;
-    latitudeDelta: number;
-    longitudeDelta: number;
+    latitudeDelta?: number;
+    longitudeDelta?: number;
 }
 
-export interface Location {
+export interface LocationDetails {
     latitude: number;
     longitude: number;
     id: string;

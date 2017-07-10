@@ -11,43 +11,36 @@ import {Card, CardSection, Input, Stepper} from '../common';
 import { EventCreationType, GeoRegion } from '../../types';
 import EventLocation from './event-location.component';
 import { LONDON } from './event-location.component';
+import {INITIAL_STATE} from './event-creation.reducer';
 
 const DEFAULT_PEOPLE = 5;
 const DEFAULT_DATE = '11:30'; // Date.now().toString();
 
-interface State {
-    event: EventCreationType;
-    listVisible: boolean;
-}
+interface State { [key: string]: any };
 interface Props { [key: string]: any }
 
 class EventCreationComponent extends Component<Props, State> {
     constructor(props) {
         super(props);
         this.state = {
-            listVisible: false,
-            event: {
-                details: null,
-                people: DEFAULT_PEOPLE,
-                // TODO location has many more data than this... should we change with another obj?
-                // TODO Yeah returning from the action set location
-                location: LONDON,
-                date: DEFAULT_DATE
-            }
+            people: DEFAULT_PEOPLE,
+            location: LONDON,
+            details: {...INITIAL_STATE.details},
+            date: DEFAULT_DATE
         };
     }
 
     setDate(date: string) {
         const curEvent = {
-            ...this.state.event,
+            ...this.state,
             date
         };
-        this.setState({event: curEvent});
+        this.setState({date: date});
         this.props.dispatch(EventCreationSetDateAction(date));
     }
 
     send() {
-        this.props.dispatch(CreateEventAction(this.state.event));
+        this.props.dispatch(CreateEventAction(this.state));
     }
 
     render() {
@@ -60,16 +53,16 @@ class EventCreationComponent extends Component<Props, State> {
                 <HideableView visible={!this.state.listVisible}>
                 <Card>
                     <CardSection>
-                        <Text style={styles.label}>{get(this.state.event.details.name)}</Text>
+                        <Text style={styles.label}>{this.details().name}</Text>
                     </CardSection>
                     <CardSection>
-                        <Text style={styles.label}>{get(this.state, 'event.details.address')}</Text>
+                        <Text style={styles.label}>{this.details().address}</Text>
                     </CardSection>
                     <CardSection>
-                        <Text style={styles.label}>{get(this.state, 'event.details.rating')}</Text>
+                        <Text style={styles.label}>{this.details().rating}</Text>
                     </CardSection>
                     <CardSection>
-                        <Text style={styles.label}>{get(this.state, 'event.details.phone')}</Text>
+                        <Text style={styles.label}>{this.details().phone}</Text>
                     </CardSection>
                     <CardSection>
                         <Text style={styles.label}>How Many People?</Text>
@@ -84,7 +77,7 @@ class EventCreationComponent extends Component<Props, State> {
                         <Text style={styles.label}>When?</Text>
                         <DatePicker
                             style={{flex: 1}}
-                            date={this.state.event.date}
+                            date={this.state.date}
                             mode='time'
                             placeholder='select date'
                             format='hh:mm'
@@ -127,6 +120,11 @@ class EventCreationComponent extends Component<Props, State> {
         this.setState({listVisible: visible});
     }
 
+    private details() {
+        // console.log(this.state)
+        return this.state.details;
+    }
+
 }
 
 const styles = StyleSheet.create({
@@ -144,8 +142,9 @@ const styles = StyleSheet.create({
 } as any);
 
 const mapStateToProps = (state) => {
-    console.log('state', state);
-    return {...state.eventCreation};
+    const {details, people, date} = state.eventCreation
+    console.log('mapStateToProps', details);
+    return {details, people, date};
 };
 
 export default connect(mapStateToProps)(EventCreationComponent);
