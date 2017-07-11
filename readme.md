@@ -12,3 +12,6 @@ Run with
 
 Android Troubleshooting
 - see react-native-vector-icons installation
+
+Libraries Used
+- [react-native-elements](https://github.com/react-native-training/react-native-elements)

@@ -3,7 +3,7 @@ import { View, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
 import DatePicker from 'react-native-datepicker'
 import { Button } from 'react-native-elements'
-import  {HideableView} from '../common'
+import  {HideableView, Container} from '../common'
 import { isEmpty } from 'lodash';
 import moment from 'moment';
 
@@ -26,14 +26,6 @@ class EventCreationComponent extends Component<Props, State> {
         this.state = {};
     }
 
-    setDate(date: string) {
-        this.props.dispatch(EventCreationSetDateAction(date));
-    }
-
-    send() {
-        this.props.dispatch(CreateEventAction(this.state));
-    }
-
     componentWillReceiveProps (nextProps) {
         if (nextProps.details !== this.props.details) {
             this.setState({ details: nextProps.details });
@@ -48,14 +40,14 @@ class EventCreationComponent extends Component<Props, State> {
 
     render() {
         return (
-            <View style={{flex: 1}}>
+            <View
+                style={{flex: 1}}
+            >
                 <EventLocation
                     style={{flex: 1}}
-                    onListVisibility={(visible) => this.onListVisibility(visible)}
+                    onListVisibility={(visible) => this.setListVisibility(visible)}
                 />
-                <HideableView
-                    visible={!this.state.listVisible}
-                >
+                <HideableView visible={!this.state.listVisible} >
                     {RenderDetails(this.props.details)}
                     <Card>
                         <CardSection>
@@ -106,12 +98,30 @@ class EventCreationComponent extends Component<Props, State> {
                         </CardSection>
                     </Card>
                 </HideableView>
+                <Container
+                    spring
+                    style={{flex: 1}}
+                    success={this.state.completeVisible}
+                ></Container>
             </View>
         );
     }
 
-    private onListVisibility(visible) {
-        this.setState({listVisible: visible});
+    private setDate(date: string) {
+        this.props.dispatch(EventCreationSetDateAction(date));
+    }
+
+    private send() {
+        // this.props.dispatch(CreateEventAction(this.state));
+        this.setState({ completeVisible: true });
+    }
+
+    private closeComplete() {
+        this.setState({ completeVisible: false });
+    }
+
+    private setListVisibility(visible) {
+        this.setState({ listVisible: visible });
     }
 }
 
@@ -129,6 +139,9 @@ const styles = StyleSheet.create({
     },
     details: {
         fontSize: 11
+    },
+    completeButton: {
+        flex: 1
     }
 } as any);
 

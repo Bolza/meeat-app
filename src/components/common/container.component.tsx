@@ -1,32 +1,25 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, Animated } from 'react-native';
-import { COLOR, ThemeProvider } from 'react-native-material-ui';
+import { StyleSheet, Text, Animated, View } from 'react-native';
+import { Icon } from 'react-native-elements';
 
-import { Spinner } from './';
+import { Spinner, FullScreenMessage } from './';
 
-const uiTheme = {
-    palette: {
-        primaryColor: COLOR.green500,
-    },
-    toolbar: {
-        container: {
-            height: 50,
-        },
-    },
-};
+interface State { [key: string]: any };
+interface Props { [key: string]: any }
 
-class Container extends Component {
+class Container extends Component<Props, State> {
     state = {
         loading: this.props.loading,
         message: this.props.message,
         error: this.props.error,
         spring: this.props.spring,
+        success: this.props.success,
         springAnim: new Animated.Value(0),
     }
 
     componentWillReceiveProps(newProps) {
         this.setState({ ...this.state, ...newProps });
-        return true;        
+        return true;
     }
 
     renderContent() {
@@ -37,19 +30,26 @@ class Container extends Component {
             return <Text style={styles.error}>{this.state.error}</Text>;
         } else if (this.state.message) {
             return <Text style={styles.message}>{this.state.message}</Text>;
+        } else if (this.state.success) {
+            return <FullScreenMessage
+                message={'Event Created!'}
+                onPress={() => this.theOnPress()}
+            ></FullScreenMessage>
         }
         return this.props.children || null;
     }
 
+    theOnPress() {
+        this.setState({success: false})
+    }
+
     render() {
-        const toValue = this.state.loading || this.state.message || this.state.error ? 60 : 0;
+        const toValue = this.state.loading || this.state.message || this.state.error || this.state.success ? 500 : 0;
         Animated.spring(this.state.springAnim, { toValue, friction: 10 }).start();
-        
+
         return (
-            <Animated.View style={{ height: this.state.springAnim }}>
-                <ThemeProvider uiTheme={uiTheme}>
-                    {this.renderContent()}  
-                </ThemeProvider>
+            <Animated.View style={[this.props.style, {height: this.state.springAnim}]}>
+                {this.renderContent()}
             </Animated.View>
         );
     }
@@ -58,13 +58,11 @@ class Container extends Component {
 const styles = StyleSheet.create({
     error: {
         marginTop: 10,
-        // fontSize: 16,
         alignSelf: 'center',
         color: '#ff0000',
     },
     message: {
         marginTop: 10,
-        // fontSize: 16,
         alignSelf: 'center',
         color: '#0000ff',
     },
