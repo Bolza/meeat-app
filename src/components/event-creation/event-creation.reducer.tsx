@@ -25,7 +25,6 @@ export default (state = INITIAL_STATE, action): EventCreationState => {
                 details: {
                     ...action.payload
                 },
-                name: action.payload.name
             };
         case EVENT_CREATION_SET_DATE_ACTION_TYPE:
             return {

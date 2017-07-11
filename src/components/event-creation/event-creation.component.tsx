@@ -3,7 +3,9 @@ import { View, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
 import DatePicker from 'react-native-datepicker'
 import { Button } from 'react-native-elements'
-import { Fade } from '../common/'
+import  {HideableView} from '../common'
+import { isEmpty } from 'lodash';
+import moment from 'moment';
 
 import { EventCreationSetDateAction, CreateEventAction} from './event-creation.actions';
 import {Card, CardSection, Input, Stepper} from '../common';
@@ -13,7 +15,7 @@ import { LONDON } from './event-location.component';
 import {INITIAL_STATE} from './event-creation.reducer';
 
 const DEFAULT_PEOPLE = 5;
-const DEFAULT_DATE = '11:30'; // Date.now().toString();
+const DEFAULT_DATE = moment().format('LT');
 
 interface State { [key: string]: any };
 interface Props { [key: string]: any }
@@ -21,12 +23,7 @@ interface Props { [key: string]: any }
 class EventCreationComponent extends Component<Props, State> {
     constructor(props) {
         super(props);
-        this.state = {
-            people: DEFAULT_PEOPLE,
-            location: LONDON,
-            details: {},
-            date: DEFAULT_DATE,
-        };
+        this.state = {};
     }
 
     setDate(date: string) {
@@ -37,75 +34,78 @@ class EventCreationComponent extends Component<Props, State> {
         this.props.dispatch(CreateEventAction(this.state));
     }
 
+    componentWillReceiveProps (nextProps) {
+        if (nextProps.details !== this.props.details) {
+            this.setState({ details: nextProps.details });
+        }
+        if (nextProps.date !== this.props.date) {
+            this.setState({ date: nextProps.date });
+        }
+        if (nextProps.people !== this.props.people) {
+            this.setState({ people: nextProps.people });
+        }
+    }
+
     render() {
         return (
             <View style={{flex: 1}}>
                 <EventLocation
                     style={{flex: 1}}
-                    onListVisibility={(visible) => this.onListVisibility.call(this, visible)}
+                    onListVisibility={(visible) => this.onListVisibility(visible)}
                 />
-                <Fade visible={this.props.listVisible}>  
-                <Card>
-                    <CardSection>
-                        <Text style={styles.details}>{this.props.details.name}</Text>
-                    </CardSection>
-                    <CardSection>
-                        <Text style={styles.details}>{this.props.details.address}</Text>
-                    </CardSection>
-                    <CardSection>
-                        <Text style={styles.details}>{this.props.details.rating}</Text>
-                    </CardSection>
-                    <CardSection>
-                        <Text style={styles.details}>{this.props.details.phone}</Text>
-                    </CardSection>
-                    <CardSection>
-                        <Text style={styles.label}>How Many People?</Text>
-                        <Stepper
-                            style={{width: 120}}
-                            startFrom={DEFAULT_PEOPLE}
-                            min={2}
-                            max={20}
-                        />
-                    </CardSection>
-                    <CardSection>
-                        <Text style={styles.label}>When?</Text>
-                        <DatePicker
-                            style={{flex: 1}}
-                            date={this.props.date}
-                            mode='time'
-                            placeholder='select date'
-                            format='hh:mm'
-                            is24Hour={true}
-                            confirmBtnText='Confirm'
-                            cancelBtnText='Cancel'
-                            customStyles={{
-                                dateIcon: {
-                                    display: 'none'
-                                },
-                                dateText: {
-                                    fontSize: 24,
-                                },
-                                dateInput: {
-                                    borderWidth: 0,
-                                    flex: 1,
-                                    alignSelf: 'flex-end'
-                                }
-                                // ... You can check the source to find the other keys.
-                            }}
-                            onDateChange={date => this.setDate(date)}
-                        />
-                    </CardSection>
-                    <CardSection>
-                        <Button
-                            raised
-                            containerViewStyle={styles.creationButton}
-                            backgroundColor='#1faadb'
-                            icon={{name: 'done'}}
-                            onPress={() => this.send()}
-                        />
-                    </CardSection>
-                </Card>
-                </Fade>
+                <HideableView
+                    visible={!this.state.listVisible}
+                >
+                    {RenderDetails(this.props.details)}
+                    <Card>
+                        <CardSection>
+                            <Text style={styles.label}>How Many People?</Text>
+                            <Stepper
+                                style={{width: 120}}
+                                startFrom={DEFAULT_PEOPLE}
+                                min={2}
+                                max={20}
+                            />
+                        </CardSection>
+                        <CardSection>
+                            <Text style={styles.label}>When?</Text>
+                            <DatePicker
+                                style={{flex: 1}}
+                                date={this.props.date || DEFAULT_DATE}
+                                mode='time'
+                                placeholder='select date'
+                                format='hh:mm'
+                                is24Hour={true}
+                                confirmBtnText='Confirm'
+                                cancelBtnText='Cancel'
+                                customStyles={{
+                                    dateIcon: {
+                                        display: 'none'
+                                    },
+                                    dateText: {
+                                        fontSize: 24,
+                                    },
+                                    dateInput: {
+                                        borderWidth: 0,
+                                        flex: 1,
+                                        alignSelf: 'flex-end'
+                                    }
+                                    // ... You can check the source to find the other keys.
+                                }}
+                                onDateChange={date => this.setDate(date)}
+                            />
+                        </CardSection>
+                        <CardSection>
+                            <Button
+                                raised
+                                containerViewStyle={styles.creationButton}
+                                backgroundColor='#1faadb'
+                                icon={{name: 'done'}}
+                                onPress={() => this.send()}
+                            />
+                        </CardSection>
+                    </Card>
+                </HideableView>
             </View>
         );
     }
@@ -133,8 +133,31 @@ const styles = StyleSheet.create({
 } as any);
 
 const mapStateToProps = (state) => {
-    console.log('mapStateToProps', state.eventCreation);
+    // console.log('mapStateToProps', state.eventCreation);
     return {...state.eventCreation};
 };
+
+const RenderDetails = (details) => {
+    if (!isEmpty(details)) {
+        return (
+            <Card>
+                <CardSection>
+                    <Text style={styles.details}>{details.name}</Text>
+                </CardSection>
+                <CardSection>
+                    <Text style={styles.details}>{details.address}</Text>
+                </CardSection>
+                <CardSection>
+                    <Text style={styles.details}>{details.rating}</Text>
+                </CardSection>
+                <CardSection>
+                    <Text style={styles.details}>{details.phone}</Text>
+                </CardSection>
+            </Card>
+        );
+    } else {
+        return <View></View>;
+    }
+}
 
 export default connect(mapStateToProps)(EventCreationComponent);

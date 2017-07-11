@@ -6,3 +6,4 @@ export * from './spinner.component';
 export * from './container.component';
 export * from './stepper.component';
 export * from './fade.component';
+export * from './hideable-view.component';
