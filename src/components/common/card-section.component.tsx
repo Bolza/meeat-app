@@ -18,6 +18,7 @@ class CardSection extends Component<Props, State> {
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
         borderBottomWidth: 0,
         padding: 5,
         backgroundColor: '#fff',

@@ -26,6 +26,7 @@ import Router from './router';
 };
 
 const logger = (store) => next => action => {
+    if (!console.group) return;
     console.group(action.type);
     console.log('dispatching', action);
     const result = next(action);

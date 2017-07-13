@@ -18,6 +18,9 @@ class Card extends Component<Props, State> {
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
+        flexWrap: 'wrap',
+        flexDirection: 'column',
         borderWidth: 1,
         borderRadius: 2,
         borderColor: '#ddd',
@@ -30,7 +33,6 @@ const styles = StyleSheet.create({
         marginLeft: 5,
         marginRight: 5,
         marginTop: 10,
-
     }
 });
 

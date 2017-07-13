@@ -1,21 +1,18 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
-import DatePicker from 'react-native-datepicker'
-import { Button } from 'react-native-elements'
-import  {HideableView, Container} from '../common'
+import { Button, Rating } from 'react-native-elements'
 import { isEmpty } from 'lodash';
-import moment from 'moment';
 
 import { EventCreationSetDateAction, CreateEventAction} from './event-creation.actions';
-import {Card, CardSection, Input, Stepper} from '../common';
+import { Card, CardSection, Input, Stepper, HideableView, Container } from '../common';
 import { GeoRegion } from '../../types';
 import EventLocation from './event-location.component';
+import DatePicker from './event-date-picker.component';
 import { LONDON } from './event-location.component';
-import {INITIAL_STATE} from './event-creation.reducer';
+import { INITIAL_STATE } from './event-creation.reducer';
 
 const DEFAULT_PEOPLE = 5;
-const DEFAULT_DATE = moment().format('LT');
 
 interface State { [key: string]: any };
 interface Props { [key: string]: any }
@@ -41,17 +38,23 @@ class EventCreationComponent extends Component<Props, State> {
     render() {
         return (
             <Container
-                spring
+                fade
                 style={{flex: 1}}
                 success={this.state.completeVisible}
             >
-                <EventLocation
-                    style={{flex: 1}}
-                    onListVisibility={(visible) => this.setListVisibility(visible)}
-                />
-                <HideableView visible={!this.state.listVisible} >
+                <View style={{flex: 1}}>
+                    <EventLocation
+                        style={{flex: 1}}
+                        onListVisibility={(visible) => this.setListVisibility(visible)}
+                    />
                     {RenderDetails(this.props.details)}
-                    <Card>
+                </View>
+                <HideableView
+                    style={{height: 300}}
+                    removeWhenHidden
+                    visible={!this.state.listVisible}
+                >
+                    <Card style={{borderWidth: 3}}>
                         <CardSection>
                             <Text style={styles.label}>How Many People?</Text>
                             <Stepper
@@ -63,33 +66,9 @@ class EventCreationComponent extends Component<Props, State> {
                         </CardSection>
                         <CardSection>
                             <Text style={styles.label}>When?</Text>
-                            <DatePicker
-                                style={{flex: 1}}
-                                date={this.props.date || DEFAULT_DATE}
-                                mode='time'
-                                placeholder='select date'
-                                format='hh:mm'
-                                is24Hour={true}
-                                confirmBtnText='Confirm'
-                                cancelBtnText='Cancel'
-                                customStyles={{
-                                    dateIcon: {
-                                        display: 'none'
-                                    },
-                                    dateText: {
-                                        fontSize: 24,
-                                    },
-                                    dateInput: {
-                                        borderWidth: 0,
-                                        flex: 1,
-                                        alignSelf: 'flex-end'
-                                    }
-                                    // ... You can check the source to find the other keys.
-                                }}
-                                onDateChange={date => this.setDate(date)}
-                            />
+                            <DatePicker style={{alignSelf: 'center'}} />
                         </CardSection>
-                        <CardSection>
+                        <CardSection style={{flex: 0}}>
                             <Button
                                 raised
                                 containerViewStyle={styles.creationButton}
@@ -104,12 +83,8 @@ class EventCreationComponent extends Component<Props, State> {
         );
     }
 
-    private setDate(date: string) {
-        this.props.dispatch(EventCreationSetDateAction(date));
-    }
-
     private send() {
-        // this.props.dispatch(CreateEventAction(this.state));
+        this.props.dispatch(CreateEventAction(this.state));
         this.setState({ completeVisible: true });
     }
 
@@ -135,11 +110,8 @@ const styles = StyleSheet.create({
         margin: 0
     },
     details: {
-        fontSize: 11
+        fontSize: 13
     },
-    completeButton: {
-        flex: 1
-    }
 } as any);
 
 const mapStateToProps = (state) => {
@@ -150,15 +122,12 @@ const mapStateToProps = (state) => {
 const RenderDetails = (details) => {
     if (!isEmpty(details)) {
         return (
-            <Card>
-                <CardSection>
+            <Card style={{flex: 0.5}}>
+                <CardSection style={{justifyContent: 'space-between'}}>
                     <Text style={styles.details}>{details.name}</Text>
                 </CardSection>
                 <CardSection>
                     <Text style={styles.details}>{details.address}</Text>
-                </CardSection>
-                <CardSection>
-                    <Text style={styles.details}>{details.rating}</Text>
                 </CardSection>
                 <CardSection>
                     <Text style={styles.details}>{details.phone}</Text>
@@ -166,7 +135,7 @@ const RenderDetails = (details) => {
             </Card>
         );
     } else {
-        return <View></View>;
+        return null;
     }
 }
 

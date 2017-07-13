@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import MapView from 'react-native-maps';
-import {GooglePlacesAutocomplete} from '../common/GooglePlacesAutocomplete.js';
+import { GooglePlacesAutocomplete } from '../common/GooglePlacesAutocomplete.js';
 
-import {EventCreationSetLocationAction } from './event-creation.actions';
+import { EventCreationSetLocationAction } from './event-creation.actions';
 import { GeoRegion } from '../../types';
-import {INITIAL_STATE} from './event-creation.reducer';
+import { INITIAL_STATE } from './event-creation.reducer';
 
-interface State { current: GeoRegion }
+interface State { current: GeoRegion, listOpen: boolean}
 interface Props { [key: string]: any }
 
 const ZOOM_CITY = 0.3;
@@ -23,7 +23,6 @@ export const LONDON: GeoRegion = {
 
 class EventLocation extends Component<Props, State> {
     map: any;
-
     initialRegion = {
         latitude: LONDON.latitude,
         longitude: LONDON.longitude,
@@ -34,12 +33,12 @@ class EventLocation extends Component<Props, State> {
     constructor(props) {
        super(props);
         this.state = {
-            current: LONDON
+            current: LONDON,
+            listOpen: false
         };
     }
 
     componentWillReceiveProps(nextProps) {
-        // console.log('componentWillReceiveProps', this.props, nextProps)
         if (this.props.current.latitude !== nextProps.current.latitude ) {
             this.animateTo(nextProps.current);
         };
@@ -56,9 +55,7 @@ class EventLocation extends Component<Props, State> {
                     onPress={this.onMapPress}
                 />
                 <GooglePlacesAutocomplete
-                    textInputProps={{
-                        'autoCorrect': false
-                    }}
+                    textInputProps={{ 'autoCorrect': false }}
                     placeholder='Enter Location'
                     minLength={3}
                     autoFocus={false}
@@ -67,16 +64,13 @@ class EventLocation extends Component<Props, State> {
                     styles={{
                         textInputContainer: styles.textInputContainer,
                         textInput: styles.textInput,
-                        predefinedPlacesDescription: styles.predefinedPlacesDescription
+                        predefinedPlacesDescription: styles.predefinedPlacesDescription,
+                        container: {flex: 1}
                     }}
                     currentLocation
                     debounce={200}
                     query={this.composeLocalQuery()}
-                    GooglePlacesSearchQuery={{
-                        // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
-                        rankby: 'distance',
-                        types: 'establishment',
-                    }}
+                    GooglePlacesSearchQuery={{ rankby: 'distance', types: 'establishment' }}
                     onListVisibility={(visible) => this.onListVisibility.call(this, visible)}
                     onPress={(data, details) => this.onPlaceSelection.call(this, details, data)}
                 />
@@ -88,9 +82,10 @@ class EventLocation extends Component<Props, State> {
         // console.log('onRegionChangex', region);
     }
 
-    private onListVisibility(visible) {
+    private onListVisibility(isVisible) {
+        this.setState({listOpen: isVisible});
         if (this.props.onListVisibility) {
-            this.props.onListVisibility(visible);
+            this.props.onListVisibility(isVisible);
         }
     }
 
@@ -109,7 +104,6 @@ class EventLocation extends Component<Props, State> {
     }
 
     private onPlaceSelection(details) {
-        // console.log('onPlaceSelection', details);
         this.props.dispatch(EventCreationSetLocationAction({
             latitude: details.geometry.location.lat,
             longitude: details.geometry.location.lng,
@@ -133,20 +127,15 @@ class EventLocation extends Component<Props, State> {
             longitude,
             latitudeDelta: ZOOM_PLACE,
             longitudeDelta: ZOOM_PLACE,
-        }, 700);
+        }, 200);
     }
 }
 
 const styles = StyleSheet.create({
-    map: {
-        // ...StyleSheet.absoluteFillObject,
-        flex: 1
-    },
     textInputContainer: {
         backgroundColor: 'rgba(0,0,0,0)',
         borderTopWidth: 0,
         borderBottomWidth: 0,
-        borderWidth: 1
     },
     textInput: {
         marginLeft: 0,
