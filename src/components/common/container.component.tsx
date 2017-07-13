@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, Animated, View } from 'react-native';
+import { StyleSheet, Text, Animated, View, LayoutAnimation } from 'react-native';
 import { Icon } from 'react-native-elements';
 
 import { Spinner, FullScreenMessage } from './';
@@ -13,17 +13,20 @@ class Container extends Component<Props, State> {
         message: this.props.message,
         error: this.props.error,
         spring: this.props.spring,
+        fade: this.props.fade,
         success: this.props.success,
         springAnim: new Animated.Value(0),
+        fadeAnim: new Animated.Value(0),
     }
 
     componentWillReceiveProps(newProps) {
+        LayoutAnimation.configureNext(CustomLayoutLinear);
         this.setState({ ...this.state, ...newProps });
         return true;
     }
 
-    renderContent() {
-        // console.log(this.state);
+    // TODO we need to extract this shit
+    renderState() {
         if (this.state.loading) {
             return <Spinner />;
         } else if (this.state.error) {
@@ -36,23 +39,48 @@ class Container extends Component<Props, State> {
                 onPress={() => this.theOnPress()}
             ></FullScreenMessage>
         }
-        return this.props.children || null;
+    }
+
+    renderChildren() {
+        return this.props.children;
+    }
+
+    renderContent() {
+        if (this.hasState()) {
+            return (
+                <View>
+                    {this.renderState()}
+                </View>
+            );
+        }
+        return this.renderChildren();
     }
 
     theOnPress() {
-        this.setState({success: false})
+        this.setState({
+            success: false,
+            error: false,
+        });
     }
 
     render() {
-        const toValue = this.state.loading || this.state.message || this.state.error || this.state.success ? 500 : 0;
-        Animated.spring(this.state.springAnim, { toValue, friction: 10 }).start();
-
+        const opacity = this.hasState() ? 1 : 0;
+        const contentStyle = [styles.content, opacity] as any;
         return (
-            <Animated.View style={[this.props.style, {height: this.state.springAnim}]}>
-                {this.renderContent()}
-            </Animated.View>
+            <View style={this.props.style}>
+                {this.renderChildren()}
+                <View style={contentStyle}>
+                    {this.renderContent()}
+                </View>
+            </View>
+
         );
     }
+
+    private hasState() {
+        return this.state.loading || this.state.message || this.state.error || this.state.success;
+    }
+
 }
 
 const styles = StyleSheet.create({
@@ -66,6 +94,23 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         color: '#0000ff',
     },
+    content: {
+        position: 'absolute',
+        left: 0,
+        width: '100%',
+        height: '100%',
+    }
 });
+
+const CustomLayoutLinear = {
+    duration: 25,
+    create: {
+        type: LayoutAnimation.Types.linear,
+        property: LayoutAnimation.Properties.opacity,
+    },
+    update: {
+        type: LayoutAnimation.Types.easeInEaseOut,
+    },
+};
 
 export { Container };

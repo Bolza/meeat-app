@@ -40,8 +40,10 @@ class EventCreationComponent extends Component<Props, State> {
 
     render() {
         return (
-            <View
+            <Container
+                spring
                 style={{flex: 1}}
+                success={this.state.completeVisible}
             >
                 <EventLocation
                     style={{flex: 1}}
@@ -98,12 +100,7 @@ class EventCreationComponent extends Component<Props, State> {
                         </CardSection>
                     </Card>
                 </HideableView>
-                <Container
-                    spring
-                    style={{flex: 1}}
-                    success={this.state.completeVisible}
-                ></Container>
-            </View>
+            </Container>
         );
     }
 
