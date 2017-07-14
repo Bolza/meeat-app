@@ -65,7 +65,7 @@ class Container extends Component<Props, State> {
 
     render() {
         const opacity = this.hasState() ? 1 : 0;
-        const contentStyle = [styles.content, opacity] as any;
+        const contentStyle = [styles.content] as any;
         return (
             <View style={this.props.style}>
                 {this.renderChildren()}
@@ -73,7 +73,6 @@ class Container extends Component<Props, State> {
                     {this.renderContent()}
                 </View>
             </View>
-
         );
     }
 
@@ -96,7 +95,6 @@ const styles = StyleSheet.create({
     },
     content: {
         position: 'absolute',
-        left: 0,
         width: '100%',
         height: '100%',
     }

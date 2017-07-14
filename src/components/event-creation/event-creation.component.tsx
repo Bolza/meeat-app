@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Button, Rating } from 'react-native-elements'
 import { isEmpty } from 'lodash';
 
-import { EventCreationSetDateAction, CreateEventAction} from './event-creation.actions';
+import { EventCreationSetDateAction, CreateEventAction, EventCreationSetSlotsAction} from './event-creation.actions';
 import { Card, CardSection, Input, Stepper, HideableView, Container } from '../common';
 import { GeoRegion } from '../../types';
 import EventLocation from './event-location.component';
@@ -62,6 +62,7 @@ class EventCreationComponent extends Component<Props, State> {
                                 startFrom={DEFAULT_PEOPLE}
                                 min={2}
                                 max={20}
+                                onChange={(n) => this.setSlots(n)}
                             />
                         </CardSection>
                         <CardSection>
@@ -95,6 +96,11 @@ class EventCreationComponent extends Component<Props, State> {
     private setListVisibility(visible) {
         this.setState({ listVisible: visible });
     }
+
+    private setSlots(n) {
+        this.props.dispatch(EventCreationSetSlotsAction(n));
+    }
+
 }
 
 const styles = StyleSheet.create({
@@ -125,6 +131,7 @@ const RenderDetails = (details) => {
             <Card style={{flex: 0.5}}>
                 <CardSection style={{justifyContent: 'space-between'}}>
                     <Text style={styles.details}>{details.name}</Text>
+                    <Text style={styles.details}>{details.rating}</Text>
                 </CardSection>
                 <CardSection>
                     <Text style={styles.details}>{details.address}</Text>

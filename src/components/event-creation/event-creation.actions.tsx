@@ -19,6 +19,14 @@ export const EventCreationSetDateAction = (payload) => {
     };
 };
 
+export const EVENT_CREATION_SET_SLOTS_ACTION_TYPE = '[EventCreation] SetSlots';
+export const EventCreationSetSlotsAction = (payload) => {
+    return {
+        type: EVENT_CREATION_SET_SLOTS_ACTION_TYPE,
+        payload
+    };
+};
+
 export const CREATE_EVENT_ACTION = '[EventCreation] Calling Firebase API';
 export const CreateEventAction = (payload) => {
     return (dispatch) => {
@@ -53,7 +61,9 @@ export const CreateEventFailAction = (error) => {
 
 const eventObjectFactory = (originalPayload: EventCreationState): any => {
     const newPayload = {
-        ...originalPayload,
+        location: {...originalPayload.details},
+        date: originalPayload.date,
+        slots: originalPayload.slots,
         createdAt: firebase.database.ServerValue.TIMESTAMP,
         owner: firebase.auth().currentUser,
     };

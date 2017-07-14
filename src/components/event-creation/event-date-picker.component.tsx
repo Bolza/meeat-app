@@ -28,6 +28,7 @@ class DatePickerComponent extends Component<Props, State> {
                 is24Hour={true}
                 confirmBtnText='Confirm'
                 cancelBtnText='Cancel'
+                minuteInterval={30}
                 customStyles={{
                     dateIcon: {
                         display: 'none'
@@ -39,6 +40,12 @@ class DatePickerComponent extends Component<Props, State> {
                         borderWidth: 0,
                         flex: 1,
                         alignSelf: 'flex-end'
+                    },
+                    datePicker: {
+                        minWidth: 320
+                    },
+                    container: {
+                        minWidth: 320
                     }
                 }}
                 onDateChange={date => this.setDate(date)}

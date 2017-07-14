@@ -1,8 +1,8 @@
-import { EVENT_CREATION_SET_LOCATION_ACTION_TYPE, EVENT_CREATION_SET_DATE_ACTION_TYPE } from './event-creation.actions';
+import * as actions from './event-creation.actions';
 import { EventCreationState } from '../../types';
 
 export const INITIAL_STATE: EventCreationState = {
-    people: 0,
+    slots: 0,
     date: null,
     location: {
         latitude: null,
@@ -15,7 +15,7 @@ export const INITIAL_STATE: EventCreationState = {
 
 export default (state = INITIAL_STATE, action): EventCreationState => {
     switch (action.type) {
-        case EVENT_CREATION_SET_LOCATION_ACTION_TYPE:
+        case actions.EVENT_CREATION_SET_LOCATION_ACTION_TYPE:
             return {
                 ...state,
                 location: {
@@ -26,10 +26,15 @@ export default (state = INITIAL_STATE, action): EventCreationState => {
                     ...action.payload
                 },
             };
-        case EVENT_CREATION_SET_DATE_ACTION_TYPE:
+        case actions.EVENT_CREATION_SET_DATE_ACTION_TYPE:
             return {
                 ...state,
                 date: action.payload,
+            };
+        case actions.EVENT_CREATION_SET_SLOTS_ACTION_TYPE:
+            return {
+                ...state,
+                slots: action.payload,
             };
         default:
             return state;

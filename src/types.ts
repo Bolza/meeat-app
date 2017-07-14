@@ -2,7 +2,7 @@ export interface EventCreationState {
     date: string;
     location: GeoRegion;
     details: LocationDetails | any;
-    people: number;
+    slots: number;
 }
 
 export interface GeoRegion {

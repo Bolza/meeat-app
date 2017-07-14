@@ -10,6 +10,7 @@ interface Props {
     startFrom?: number;
     max?: number;
     min?: number;
+    onChange: Function;
 }
 
 class Stepper extends Component<Props, State> {
@@ -24,12 +25,14 @@ class Stepper extends Component<Props, State> {
         const counter = this.state.counter + 1;
         if (counter <= this.props.max || isNaN(this.props.max)) {
             this.setState({counter});
+            if (this.props.onChange) this.props.onChange(counter);
         }
     }
     decrease() {
         const counter = this.state.counter - 1;
         if (counter >= this.props.min || isNaN(this.props.min)) {
             this.setState({counter});
+            if (this.props.onChange) this.props.onChange(counter);
         }
     }
 
