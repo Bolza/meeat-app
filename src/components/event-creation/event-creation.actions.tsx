@@ -2,6 +2,7 @@ import firebase from 'firebase';
 import {Actions} from 'react-native-router-flux';
 import { EventCreationState, LocationDetails} from '../../types';
 import { DB_EVENTS } from '../../router';
+import { Store,  } from 'redux'
 
 export const EVENT_CREATION_SET_LOCATION_ACTION_TYPE = '[EventCreation] SetLocation';
 export const EventCreationSetLocationAction = (payload: LocationDetails) => {
@@ -29,15 +30,17 @@ export const EventCreationSetSlotsAction = (payload) => {
 
 export const CREATE_EVENT_ACTION = '[EventCreation] Calling Firebase API';
 export const CreateEventAction = (payload) => {
-    return (dispatch) => {
+    return (dispatch, getState) => {
         dispatch({ type: CREATE_EVENT_ACTION });
+        //  lets ignore payload
+        const currentStore = getState().eventCreation;
         firebase.database()
             .ref()
             .child(DB_EVENTS)
-            .push(eventObjectFactory(payload))
+            .push(eventObjectFactory(currentStore))
             .then(res => {
                 console.log(res)
-                // dispatch(CreateEventSuccessAction(res);
+                dispatch(CreateEventSuccessAction(res));
             })
             .catch(err => dispatch(CreateEventFailAction(err)));
     };
@@ -61,7 +64,7 @@ export const CreateEventFailAction = (error) => {
 
 const eventObjectFactory = (originalPayload: EventCreationState): any => {
     const newPayload = {
-        location: originalPayload.details,
+        details: originalPayload.details,
         date: originalPayload.date,
         slots: originalPayload.slots,
         createdAt: firebase.database.ServerValue.TIMESTAMP,

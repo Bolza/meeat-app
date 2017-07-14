@@ -5,23 +5,24 @@ import DatePicker from 'react-native-datepicker'
 import moment from 'moment';
 
 import { EventCreationSetDateAction } from './event-creation.actions';
+import { INITIAL_STATE } from './event-creation.reducer';
 
 interface State { [key: string]: any }
 interface Props { [key: string]: any }
 
-const DEFAULT_DATE = moment().format('LT');
+// const DEFAULT_DATE = moment().format('LT');
 
 class DatePickerComponent extends Component<Props, State> {
     constructor(props) {
        super(props);
-       this.state = {};
+       this.state = {date: INITIAL_STATE.date};
     }
 
     render() {
         return (
             <DatePicker
                 style={[{flex: 1}, this.props.style]}
-                date={this.props.date || DEFAULT_DATE}
+                date={this.props.date}
                 mode='time'
                 placeholder='select date'
                 format='hh:mm'

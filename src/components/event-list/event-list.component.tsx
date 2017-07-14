@@ -22,12 +22,24 @@ class EventList extends Component<Props, State> {
         return (
             <View style={{flex: 1}}>
                 <FlatList
+                    keyExtractor={this.keyExtractor}
                     style={{flex: 1}}
                     data={this.props.list}
-                    renderItem={({item}) => <ListItem title={item.details.name} />}
+                    renderItem={this.eventListItem}
                 />
             </View>
         );
+    }
+
+    private keyExtractor(item: any) {
+        return item.id;
+    }
+
+    private eventListItem({item}) {
+        return <ListItem
+            title={item.details.name}
+            subtitle={`${item.slots} available seats`}
+        />;
     }
 }
 

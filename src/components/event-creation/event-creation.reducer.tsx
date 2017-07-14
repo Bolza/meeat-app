@@ -1,9 +1,13 @@
 import * as actions from './event-creation.actions';
 import { EventCreationState } from '../../types';
+import moment from 'moment';
+
+const DEFAULT_DATE = moment().format('LT');
+const DEFAULT_PEOPLE = 5;
 
 export const INITIAL_STATE: EventCreationState = {
-    slots: 0,
-    date: null,
+    slots: DEFAULT_PEOPLE,
+    date: DEFAULT_DATE,
     location: {
         latitude: null,
         longitude: null,

@@ -33,6 +33,9 @@ class EventCreationComponent extends Component<Props, State> {
         if (nextProps.people !== this.props.people) {
             this.setState({ people: nextProps.people });
         }
+        if (nextProps.slots !== this.props.slots) {
+            this.setState({ slots: nextProps.slots });
+        }
     }
 
     render() {
@@ -75,7 +78,7 @@ class EventCreationComponent extends Component<Props, State> {
                                 containerViewStyle={styles.creationButton}
                                 backgroundColor='#1faadb'
                                 icon={{name: 'done'}}
-                                onPress={() => this.send()}
+                                onPress={() => this.createTheEvent()}
                             />
                         </CardSection>
                     </Card>
@@ -84,7 +87,7 @@ class EventCreationComponent extends Component<Props, State> {
         );
     }
 
-    private send() {
+    private createTheEvent() {
         this.props.dispatch(CreateEventAction(this.state));
         this.setState({ completeVisible: true });
     }

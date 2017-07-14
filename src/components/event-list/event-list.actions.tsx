@@ -1,5 +1,5 @@
 import firebase from 'firebase';
-import { values } from 'lodash';
+import { values, forEach } from 'lodash';
 import {Actions} from 'react-native-router-flux';
 import { EventCreationState, LocationDetails} from '../../types';
 import { DB_EVENTS } from '../../router';
@@ -10,7 +10,12 @@ export const EventListFetchAction = () => {
         const user = firebase.auth().currentUser;
         firebase.database().ref(DB_EVENTS)
             .on('value', (snapshot) => {
-                const eventsArray = values(snapshot.val());
+                const value = snapshot.val();
+                console.log('got values', value);
+                let eventsArray = [];
+                forEach(value, (v, k) => {
+                    eventsArray.push({...v, id: k});
+                });
                 dispatch(EventListFetchSuccessAction(eventsArray));
             });
     };
