@@ -15,3 +15,7 @@ Android Troubleshooting
 
 Libraries Used
 - [react-native-elements](https://github.com/react-native-training/react-native-elements)
+
+TODO
+
+[ ] DatePicker should be fixed to accept minutesInterval, should we use another one?

@@ -6,65 +6,60 @@ import { connect } from 'react-redux';
 
 import { EmailChangedAction, PasswordChangedAction, LoginSuccessAction, LoginAttemptAction } from './auth.actions';
 import { Card, CardSection, Input, Spinner, Container } from '../common/index';
+import { AuthState, AppState } from '../../types';
 /* eslint-enable max-len */
 
-class Login extends Component {
+interface State { [key: string]: any };
+interface Props { [key: string]: any }
 
-    state = { 
-        email: '', 
+class Login extends Component<Props, State> {
+    state = {
+        email: '',
         password: '',
         error: '',
         message: '',
         loading: false,
     };
-    
-    componentDidMount() {
-        
-    }    
-    
+
     onCreationError(resp) {
-        // console.log('onCreationError', resp);
         this.setState({ loading: false, message: '', error: resp.message });
     }
     onCreationSuccess(resp) {
-        // console.log('onCreationSuccess', resp);
         this.setState({ loading: false, error: '', message: 'Creation Success' });
     }
     onLoginSuccess(resp) {
-        // console.log('onLoginSuccess', resp);
         this.setState({ loading: false, error: '', message: 'Login Success' });
-        // this.props.LoginSuccessAction(resp);
     }
-    
+
     onButtonPress() {
         let { email, password } = this.props;
         email = 'asd@asd.asd';
         password = 'asdasd';
         this.setState({ error: '', loading: true });
-        this.props.dispatch(new LoginAttemptAction({ email, password }));
+        this.props.dispatch(LoginAttemptAction({ email, password }));
     }
-    
+
     onPasswordChange(text) {
-        this.props.dispatch(new PasswordChangedAction(text));
+        this.props.dispatch(PasswordChangedAction(text));
     }
 
     onEmailChange(text) {
         const lowText = text.toLowerCase();
-        this.props.dispatch(new EmailChangedAction(lowText));
+        this.props.dispatch(EmailChangedAction(lowText));
     }
 
     renderButton() {
         if (this.state.loading) {
             return <Spinner />;
         }
-        
+
         const cc = { container: styles.loginButton };
         return (
-            <Button 
+            <Button
                 style={cc}
-                primary raised 
+                primary raised
                 onPress={this.onButtonPress.bind(this)}
-                text='Login' 
+                text='Login'
             />
         );
     }
@@ -72,34 +67,33 @@ class Login extends Component {
     render() {
         return (
             <ThemeProvider uiTheme={uiTheme}>
-                
+
             <Card>
                 <CardSection>
                     <Input
-                        label="email"
-                        placeholder="Insert email"
+                        label='email'
+                        placeholder='Insert email'
                         value={this.props.email}
                         onChangeText={this.onEmailChange.bind(this)}
                     />
                 </CardSection>
-                    
+
                 <CardSection>
                     <Input
                         secure
-                        label="password"
-                        placeholder="Insert password"
+                        label='password'
+                        placeholder='Insert password'
                         value={this.props.password}
                         onChangeText={this.onPasswordChange.bind(this)}
                     />
                 </CardSection>
-                
+
                 <Container
                     spring
                     loading={this.state.loading}
                     error={this.state.error}
                     message={this.state.message}
                 >
-                    <Text> wtf </Text>
                 </Container>
 
                 <CardSection>
@@ -126,7 +120,7 @@ const styles = StyleSheet.create({
     },
     loginButton: {
         flex: 1,
-    }, 
+    },
 });
 
 const uiTheme = {
@@ -140,7 +134,7 @@ const uiTheme = {
     },
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: AppState) => {
     return {
         email: state.auth.email,
         password: state.auth.password,

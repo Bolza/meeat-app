@@ -21,3 +21,16 @@ export interface LocationDetails {
     rating: number;
     phone: string;
 }
+
+export interface AuthState {
+    email: string;
+    password: string;
+    user: any;
+    error: string;
+}
+
+export interface AppState {
+    eventCreation: EventCreationState,
+    events: any[],
+    auth: AuthState
+}

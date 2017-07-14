@@ -1,7 +1,7 @@
 import firebase from 'firebase';
-// import { values } from 'lodash';
 import {Actions} from 'react-native-router-flux';
 import { EventCreationState, LocationDetails} from '../../types';
+import { DB_EVENTS } from '../../router';
 
 export const EVENT_CREATION_SET_LOCATION_ACTION_TYPE = '[EventCreation] SetLocation';
 export const EventCreationSetLocationAction = (payload: LocationDetails) => {
@@ -33,7 +33,7 @@ export const CreateEventAction = (payload) => {
         dispatch({ type: CREATE_EVENT_ACTION });
         firebase.database()
             .ref()
-            .child('app/events')
+            .child(DB_EVENTS)
             .push(eventObjectFactory(payload))
             .then(res => {
                 console.log(res)
@@ -61,7 +61,7 @@ export const CreateEventFailAction = (error) => {
 
 const eventObjectFactory = (originalPayload: EventCreationState): any => {
     const newPayload = {
-        location: {...originalPayload.details},
+        location: originalPayload.details,
         date: originalPayload.date,
         slots: originalPayload.slots,
         createdAt: firebase.database.ServerValue.TIMESTAMP,
