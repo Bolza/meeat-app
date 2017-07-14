@@ -2,7 +2,6 @@ import firebase from 'firebase';
 import {Actions} from 'react-native-router-flux';
 import { EventCreationState, LocationDetails} from '../../types';
 import { DB_EVENTS } from '../../router';
-import { Store,  } from 'redux'
 
 export const EVENT_CREATION_SET_LOCATION_ACTION_TYPE = '[EventCreation] SetLocation';
 export const EventCreationSetLocationAction = (payload: LocationDetails) => {
@@ -39,7 +38,6 @@ export const CreateEventAction = (payload) => {
             .child(DB_EVENTS)
             .push(eventObjectFactory(currentStore))
             .then(res => {
-                console.log(res)
                 dispatch(CreateEventSuccessAction(res));
             })
             .catch(err => dispatch(CreateEventFailAction(err)));

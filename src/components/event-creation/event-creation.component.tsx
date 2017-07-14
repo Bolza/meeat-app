@@ -12,8 +12,6 @@ import DatePicker from './event-date-picker.component';
 import { LONDON } from './event-location.component';
 import { INITIAL_STATE } from './event-creation.reducer';
 
-const DEFAULT_PEOPLE = 5;
-
 interface State { [key: string]: any };
 interface Props { [key: string]: any }
 
@@ -62,7 +60,7 @@ class EventCreationComponent extends Component<Props, State> {
                             <Text style={styles.label}>How Many People?</Text>
                             <Stepper
                                 style={{width: 120}}
-                                startFrom={DEFAULT_PEOPLE}
+                                startFrom={INITIAL_STATE.slots}
                                 min={2}
                                 max={20}
                                 onChange={(n) => this.setSlots(n)}
@@ -103,7 +101,6 @@ class EventCreationComponent extends Component<Props, State> {
     private setSlots(n) {
         this.props.dispatch(EventCreationSetSlotsAction(n));
     }
-
 }
 
 const styles = StyleSheet.create({
