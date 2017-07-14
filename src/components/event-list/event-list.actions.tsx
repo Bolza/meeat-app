@@ -1,16 +1,17 @@
 import firebase from 'firebase';
-// import { values } from 'lodash';
+import { values } from 'lodash';
 import {Actions} from 'react-native-router-flux';
 import { EventCreationState, LocationDetails} from '../../types';
 import { DB_EVENTS } from '../../router';
 
 export const EVENT_LIST_FETCH_ACTION_TYPE = '[EventList] FetchAction';
-export const EventListFetchAction = (payload) => {
+export const EventListFetchAction = () => {
     return (dispatch) => {
         const user = firebase.auth().currentUser;
         firebase.database().ref(DB_EVENTS)
             .on('value', (snapshot) => {
-                dispatch(EventListFetchSuccessAction(payload));
+                const eventsArray = values(snapshot.val());
+                dispatch(EventListFetchSuccessAction(eventsArray));
             });
     };
 };

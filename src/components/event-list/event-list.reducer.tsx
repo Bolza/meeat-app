@@ -11,7 +11,7 @@ export default (state = INITIAL_STATE, action): any => {
             console.log('event-list.reducer.EVENT_LIST_FETCH_SUCCESS_ACTION_TYPE', action.payload)
             return {
                 ...state,
-                list: action.payload,
+                list: [...action.payload],
             };
         default:
             return state;

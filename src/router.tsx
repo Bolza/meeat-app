@@ -4,15 +4,23 @@ import Login from './components/login/login.component';
 import EmployeeListComponent from './components/employee-list.component';
 import CreateEmployee from './components/create-employee.component';
 import EventCreationComponent from './components/event-creation/event-creation.component';
+import EventListComponent from './components/event-list/event-list.component';
 
 const RouterComponent = () => {
     return (
         <Router sceneStyle={style}>
             <Scene key='meeat' initial>
                 <Scene
+                    key='EventList'
+                    component={EventListComponent}
+                    title='Events Near You'
+                    rightTitle='Add'
+                    onRight={() => Actions.EventCreation()}
+                />
+                <Scene
                     key='EventCreation'
                     component={EventCreationComponent}
-                    title='EventCreationComponent'
+                    title='Create new Event'
                 />
             </Scene>
             <Scene key='main'>
