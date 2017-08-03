@@ -22,7 +22,7 @@ export const LoginAttemptAction = ({ email, password }) => {
     return (dispatch) => {
         dispatch({ type: LOGIN_ATTEMPT_ACTION });
         firebase.auth().signInWithEmailAndPassword(email, password)
-            .then(user => dispatch(new LoginSuccessAction(user)));
+            .then(user => dispatch(LoginSuccessAction(user)));
             // .catch(() => dispatch(new LoginFailAction()));
             // .catch(() => {
             //     firebase.login().createUserWithEmailAndPassword(email, password)
@@ -35,10 +35,7 @@ export const LoginAttemptAction = ({ email, password }) => {
 export const LOGIN_SUCCESS_ACTION = 'Login Success';
 export const LoginSuccessAction = (user) => {
     return (dispatch) => {
-        dispatch({ 
-            type: LOGIN_SUCCESS_ACTION,
-            payload: user
-        });
+        dispatch({ type: LOGIN_SUCCESS_ACTION, payload: user });
         Actions.main();
     };
 };
