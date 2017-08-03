@@ -24,7 +24,9 @@ TODO
 
 - [ ] Store: We Need to clear up the shit with the location coordinates in redux
 
-- [ ] Feature: EventZoom view, we probably just need to store the id + Join Event Button
+- [X] Feature: EventZoom view
+
+- [ ] EventZoom: Join Event functionality
 
 - [ ] Login: Login w FB & Google
 
