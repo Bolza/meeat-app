@@ -40,4 +40,4 @@ TODO
 
 - [ ] Feature: Profile Page? At the beginning there wont be that many events anyway so we don't need to filter per interests and stuff, so we don't need to know that stuff
 
-- Un-register Firebase listener on Component destroy
+- [X] Un-register Firebase listener on Component destroy

@@ -5,12 +5,18 @@ import { EventCreationState, LocationDetails} from '../../types';
 import { DB_EVENTS } from '../../router';
 import { EventZoomFetchAction } from '../event-zoom/event-zoom.actions';
 
+let callback;
+let ref;
+
 export const EVENT_LIST_FETCH_ACTION_TYPE = '[EventList] FetchAction';
 export const EventListFetchAction = () => {
     return (dispatch) => {
         const user = firebase.auth().currentUser;
-        const ref = firebase.database().ref(DB_EVENTS)
-        const unListen = ref.on('value', (snapshot) => {
+        if (ref && callback) {
+            ref.off('value', callback);
+        }
+        ref = firebase.database().ref(DB_EVENTS)
+        callback = ref.on('value', (snapshot) => {
             const value = snapshot.val();
             const eventsArray = objToArray(value);
             dispatch(EventListFetchSuccessAction(eventsArray));
@@ -28,9 +34,7 @@ export const EventListFetchSuccessAction = (payload) => {
 
 export const EVENT_LIST_TO_ZOOM_ACTION_TYPE = '[EventList] EventListToZoomAction';
 export const EventListToZoomAction = (eventId: string) => {
-    // TODO: move this in a router interceptor and check that is really re-attached
-    // const ref = firebase.database().ref(DB_EVENTS)
-    // ref.off('value');
+    // TODO: move this in a router interceptor?
     return (dispatch) => {
         dispatch({ type: EVENT_LIST_TO_ZOOM_ACTION_TYPE });
         dispatch(EventZoomFetchAction(eventId));
