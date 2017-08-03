@@ -16,23 +16,15 @@ export const EventListFetchAction = () => {
                 forEach(value, (v, k) => {
                     eventsArray.push({...v, id: k});
                 });
-                dispatch(EventListFetchSuccessAction(eventsArray));
+                dispatch(EventZoomFetchSuccessAction(eventsArray));
             });
     };
 };
 
-export const EVENT_LIST_FETCH_SUCCESS_ACTION_TYPE = '[EventList] FetchAction Success';
-export const EventListFetchSuccessAction = (payload) => {
+export const EVENT_ZOOM_FETCH_SUCCESS_ACTION_TYPE = '[EventZoom] FetchAction Success';
+export const EventZoomFetchSuccessAction = (payload) => {
      return {
-        type: EVENT_LIST_FETCH_SUCCESS_ACTION_TYPE,
+        type: EVENT_ZOOM_FETCH_SUCCESS_ACTION_TYPE,
         payload
-    };
-};
-
-export const EVENT_LIST_TO_ZOOM_ACTION_TYPE = '[EventList] EventListToZoomAction';
-export const EventListToZoomAction = (payload: string) => {
-    return (dispatch) => {
-        dispatch({ type: EVENT_LIST_TO_ZOOM_ACTION_TYPE });
-        Actions.EventZoom({type: 'reset', eventId: payload});
     };
 };
