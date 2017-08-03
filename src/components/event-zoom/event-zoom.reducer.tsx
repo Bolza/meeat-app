@@ -1,44 +1,29 @@
-import * as actions from './event-creation.actions';
-import { EventCreationState } from '../../types';
+import * as actions from './event-zoom.actions';
+import { EventZoomState } from '../../types';
 import moment from 'moment';
+import { EVENT_ZOOM_FETCH_SUCCESS_ACTION_TYPE } from './event-zoom.actions';
+import {INITIAL_STATE as EVENT_INITIAL_STATE} from '../event-creation/event-creation.reducer';
 
 const DEFAULT_DATE = moment().format('LT');
 const DEFAULT_PEOPLE = 5;
 
-export const INITIAL_STATE: EventCreationState = {
-    slots: DEFAULT_PEOPLE,
-    date: DEFAULT_DATE,
-    location: {
-        latitude: null,
-        longitude: null,
-        latitudeDelta: null,
-        longitudeDelta: null,
-    },
-    details: {}
+export const INITIAL_STATE: EventZoomState = {
+    item: {...EVENT_INITIAL_STATE},
+    loading: false,
 };
 
-export default (state = INITIAL_STATE, action): EventCreationState => {
+export default (state = INITIAL_STATE, action): EventZoomState => {
     switch (action.type) {
-        case actions.EVENT_CREATION_SET_LOCATION_ACTION_TYPE:
+        case actions.EVENT_LIST_FETCH_ACTION_TYPE:
             return {
                 ...state,
-                location: {
-                    latitude: action.payload.latitude,
-                    longitude: action.payload.longitude,
-                },
-                details: {
-                    ...action.payload
-                },
+                loading: true
             };
-        case actions.EVENT_CREATION_SET_DATE_ACTION_TYPE:
+        case actions.EVENT_ZOOM_FETCH_SUCCESS_ACTION_TYPE:
             return {
                 ...state,
-                date: action.payload,
-            };
-        case actions.EVENT_CREATION_SET_SLOTS_ACTION_TYPE:
-            return {
-                ...state,
-                slots: action.payload,
+                item: {...action.payload},
+                loading: false
             };
         default:
             return state;

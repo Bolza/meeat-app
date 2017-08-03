@@ -4,20 +4,21 @@ import {Actions} from 'react-native-router-flux';
 import { EventCreationState, LocationDetails} from '../../types';
 import { DB_EVENTS } from '../../router';
 
+let callback;
+let ref;
+
 export const EVENT_LIST_FETCH_ACTION_TYPE = '[EventList] FetchAction';
-export const EventListFetchAction = () => {
+export const EventZoomFetchAction = (eventId) => {
     return (dispatch) => {
         const user = firebase.auth().currentUser;
-        firebase.database().ref(DB_EVENTS)
-            .on('value', (snapshot) => {
-                const value = snapshot.val();
-                console.log('got values', value);
-                let eventsArray = [];
-                forEach(value, (v, k) => {
-                    eventsArray.push({...v, id: k});
-                });
-                dispatch(EventZoomFetchSuccessAction(eventsArray));
-            });
+        if (ref && callback) {
+            ref.off('value', callback);
+        }
+        ref = firebase.database().ref(DB_EVENTS).child(eventId);
+        callback = ref.on('value', (snapshot) => {
+            const value = snapshot.val();
+            dispatch(EventZoomFetchSuccessAction(value));
+        });
     };
 };
 

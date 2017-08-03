@@ -5,6 +5,11 @@ export interface EventCreationState {
     slots: number;
 }
 
+export interface EventZoomState {
+    item: EventCreationState;
+    loading: boolean;
+}
+
 export interface GeoRegion {
     latitude: number;
     longitude: number;
@@ -31,6 +36,7 @@ export interface AuthState {
 
 export interface AppState {
     eventCreation: EventCreationState,
+    eventZoom: EventCreationState,
     events: any[],
     auth: AuthState
 }

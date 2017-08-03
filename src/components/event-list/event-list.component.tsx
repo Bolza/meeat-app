@@ -8,10 +8,11 @@ import { EventListFetchAction, EventListToZoomAction } from './event-list.action
 interface State { [key: string]: any }
 interface Props { [key: string]: any }
 
-class EventList extends Component<Props, State> {
+class EventListComponent extends Component<Props, State> {
 
     componentWillMount() {
         this.state = {};
+        console.log('EventListComponent', this.props)
         this.props.dispatch(EventListFetchAction());
     }
 
@@ -56,4 +57,4 @@ const mapStateToProps = (state: AppState) => {
     return {...state.events};
 };
 
-export default connect(mapStateToProps)(EventList);
+export default connect(mapStateToProps)(EventListComponent);

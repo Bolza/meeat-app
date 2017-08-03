@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import { Button, Rating, Card } from 'react-native-elements'
 import { isEmpty } from 'lodash';
 
-import { EventCreationSetDateAction, CreateEventAction, EventCreationSetSlotsAction} from './event-zoom.actions';
 import { Input, Stepper, HideableView, Container } from '../common';
 import { GeoRegion } from '../../types';
+import { EventZoomFetchAction } from './event-zoom.actions';
 
 interface State { [key: string]: any };
 interface Props { [key: string]: any }
@@ -15,6 +15,7 @@ class EventZoomComponent extends Component<Props, State> {
 
     componentWillMount() {
         this.state = {};
+        // this.props.dispatch(EventZoomFetchAction(this.props.eventId));
     }
 
     componentWillReceiveProps (nextProps) {
@@ -40,13 +41,15 @@ class EventZoomComponent extends Component<Props, State> {
                 success={this.state.completeVisible}
             >
                 <Card>
-                    {RenderDetails(this.props.details)}
+                    {RenderDetails(this.props.item.details)}
                 </Card>
                 <Card>
-                    <Text>How Many People?</Text>
+                    <Text>Slots</Text>
+                    <Text>{this.props.item.slots}</Text>
                 </Card>
                 <Card>
-                    <Text>When?</Text>
+                    <Text>Date</Text>
+                    <Text>{this.props.item.date}</Text>
                 </Card>
                 <Card>
                     <Button
@@ -62,7 +65,6 @@ class EventZoomComponent extends Component<Props, State> {
     }
 
     private createTheEvent() {
-        this.props.dispatch(CreateEventAction(this.state));
         this.setState({ completeVisible: true });
     }
 }
@@ -73,7 +75,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     // console.log('mapStateToProps', state.eventCreation);
-    return {...state.eventCreation};
+    return {...state.eventZoom};
 };
 
 const RenderDetails = (details) => {

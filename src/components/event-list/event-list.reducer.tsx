@@ -8,7 +8,7 @@ export const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action): any => {
     switch (action.type) {
         case actions.EVENT_LIST_FETCH_SUCCESS_ACTION_TYPE:
-            console.log('event-list.reducer.EVENT_LIST_FETCH_SUCCESS_ACTION_TYPE', action.payload)
+            // console.log('event-list.reducer.EVENT_LIST_FETCH_SUCCESS_ACTION_TYPE', action.payload)
             return {
                 ...state,
                 list: [...action.payload],
