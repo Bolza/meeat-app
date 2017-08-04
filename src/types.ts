@@ -1,3 +1,13 @@
+export interface Event {
+    id: string;
+    date: string;
+    location: GeoRegion;
+    details: LocationDetails | any;
+    slots: number;
+    owner: string;
+    guests: string[];
+}
+
 export interface EventCreationState {
     date: string;
     location: GeoRegion;
@@ -6,7 +16,7 @@ export interface EventCreationState {
 }
 
 export interface EventZoomState {
-    item: EventCreationState;
+    item: Event;
     loading: boolean;
 }
 

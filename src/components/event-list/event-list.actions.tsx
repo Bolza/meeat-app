@@ -1,5 +1,5 @@
 import firebase from 'firebase';
-import { values, forEach } from 'lodash';
+import { values, forEach, map } from 'lodash';
 import {Actions} from 'react-native-router-flux';
 import { EventCreationState, LocationDetails} from '../../types';
 import { DB_EVENTS } from '../../router';
@@ -11,6 +11,7 @@ let ref;
 export const EVENT_LIST_FETCH_ACTION_TYPE = '[EventList] FetchAction';
 export const EventListFetchAction = () => {
     return (dispatch) => {
+        dispatch({ type: EVENT_LIST_FETCH_ACTION_TYPE });
         const user = firebase.auth().currentUser;
         if (ref && callback) {
             ref.off('value', callback);
@@ -19,6 +20,7 @@ export const EventListFetchAction = () => {
         callback = ref.on('value', (snapshot) => {
             const value = snapshot.val();
             const eventsArray = objToArray(value);
+
             dispatch(EventListFetchSuccessAction(eventsArray));
         });
     };

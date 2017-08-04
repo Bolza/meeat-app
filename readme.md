@@ -26,7 +26,9 @@ TODO
 
 - [X] Feature: EventZoom view
 
-- [ ] EventZoom: Join Event functionality
+- [X] EventZoom: Join Event functionality
+
+- [ ] EventZoom: Render GuestList
 
 - [ ] Login: Login w FB & Google
 
@@ -43,3 +45,5 @@ TODO
 - [ ] Feature: Profile Page? At the beginning there wont be that many events anyway so we don't need to filter per interests and stuff, so we don't need to know that stuff
 
 - [X] Un-register Firebase listener on Component destroy
+
+- [ ] Clean no-unused-vars

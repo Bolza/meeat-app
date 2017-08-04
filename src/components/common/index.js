@@ -8,3 +8,4 @@ export * from './stepper.component';
 export * from './fade.component';
 export * from './hideable-view.component';
 export * from './full-screen-message.component';
+export * from './location-card.component';

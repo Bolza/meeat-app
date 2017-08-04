@@ -1,20 +1,18 @@
+import moment from 'moment';
+import { values, forEach } from 'lodash';
+
 import * as actions from './event-zoom.actions';
 import { EventZoomState } from '../../types';
-import moment from 'moment';
-import { EVENT_ZOOM_FETCH_SUCCESS_ACTION_TYPE } from './event-zoom.actions';
 import {INITIAL_STATE as EVENT_INITIAL_STATE} from '../event-creation/event-creation.reducer';
 
-const DEFAULT_DATE = moment().format('LT');
-const DEFAULT_PEOPLE = 5;
-
 export const INITIAL_STATE: EventZoomState = {
-    item: {...EVENT_INITIAL_STATE},
+    item: {...EVENT_INITIAL_STATE, owner: '', guests: [], id: ''},
     loading: false,
 };
 
 export default (state = INITIAL_STATE, action): EventZoomState => {
     switch (action.type) {
-        case actions.EVENT_LIST_FETCH_ACTION_TYPE:
+        case actions.EVENT_ZOOM_FETCH_ACTION_TYPE:
             return {
                 ...state,
                 loading: true
@@ -22,10 +20,30 @@ export default (state = INITIAL_STATE, action): EventZoomState => {
         case actions.EVENT_ZOOM_FETCH_SUCCESS_ACTION_TYPE:
             return {
                 ...state,
-                item: {...action.payload},
+                item: {
+                    ...action.payload,
+                    guests: objToArray(action.payload.guests)
+                },
+                loading: false
+            };
+        case actions.EVENT_ZOOM_JOIN_SUCCESS_ACTION_TYPE:
+            return {
+                ...state,
+                item: {
+                    ...state.item,
+                    guests: objToArray(action.payload)
+                },
                 loading: false
             };
         default:
             return state;
     }
 };
+
+function objToArray(obj) {
+    let array = [];
+    forEach(obj, (v, k) => {
+        array.push(v);
+    });
+    return array;
+}
