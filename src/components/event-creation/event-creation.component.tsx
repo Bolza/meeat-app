@@ -121,7 +121,6 @@ const styles = StyleSheet.create({
 } as any);
 
 const mapStateToProps = (state) => {
-    // console.log('mapStateToProps', state.eventCreation);
     return {...state.eventCreation};
 };
 

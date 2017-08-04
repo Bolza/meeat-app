@@ -42,6 +42,10 @@ class EventZoomComponent extends Component<Props, State> {
                     <UserList items={this.props.item.guests} />
                 </Card>
                 <Card>
+                    <Text>Are you the owner of the event</Text>
+                    <Text>{this.props.item.isOwned ? 'YES' : 'NO'}</Text>
+                </Card>
+                <Card>
                     <Button
                         raised
                         containerViewStyle={styles.creationButton}
@@ -65,7 +69,6 @@ const styles = StyleSheet.create({
 } as any);
 
 const mapStateToProps = (state) => {
-    console.log(state.eventZoom)
     return {...state.eventZoom};
 };
 
