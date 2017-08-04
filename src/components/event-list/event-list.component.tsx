@@ -3,18 +3,16 @@ import { StyleSheet, View, Text, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { List, ListItem } from 'react-native-elements'
 import { AppState } from '../../types';
-import { EventListFetchAction } from './event-list.actions';
+import { EventListFetchAction, EventListToZoomAction } from './event-list.actions';
 
 interface State { [key: string]: any }
 interface Props { [key: string]: any }
 
-class EventList extends Component<Props, State> {
-    constructor(props) {
-       super(props);
-       this.state = {};
-    }
+class EventListComponent extends Component<Props, State> {
 
     componentWillMount() {
+        this.state = {};
+        console.log('EventListComponent', this.props)
         this.props.dispatch(EventListFetchAction());
     }
 
@@ -25,7 +23,7 @@ class EventList extends Component<Props, State> {
                     keyExtractor={this.keyExtractor}
                     style={{flex: 1}}
                     data={this.props.list}
-                    renderItem={this.eventListItem}
+                    renderItem={this.eventListItem.bind(this)}
                 />
             </View>
         );
@@ -35,10 +33,15 @@ class EventList extends Component<Props, State> {
         return item.id;
     }
 
+    private navigateToZoom(id: string) {
+        this.props.dispatch(EventListToZoomAction(id));
+    }
+
     private eventListItem({item}) {
         return <ListItem
             title={item.details.name}
             subtitle={`${item.slots} available seats`}
+            onPress={this.navigateToZoom.bind(this, item.id)}
         />;
     }
 }
@@ -54,4 +57,4 @@ const mapStateToProps = (state: AppState) => {
     return {...state.events};
 };
 
-export default connect(mapStateToProps)(EventList);
+export default connect(mapStateToProps)(EventListComponent);

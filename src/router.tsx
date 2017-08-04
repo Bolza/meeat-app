@@ -4,6 +4,7 @@ import Login from './components/login/login.component';
 import EmployeeListComponent from './components/employee-list.component';
 import CreateEmployee from './components/create-employee.component';
 import EventCreationComponent from './components/event-creation/event-creation.component';
+import EventZoomComponent from './components/event-zoom/event-zoom.component';
 import EventListComponent from './components/event-list/event-list.component';
 
 const RouterComponent = () => {
@@ -22,19 +23,12 @@ const RouterComponent = () => {
                     component={EventCreationComponent}
                     title='Create new Event'
                 />
-            </Scene>
-            <Scene key='main'>
                 <Scene
-                    key='employeeList'
-                    component={EmployeeListComponent}
-                    title='Employees'
-                    rightTitle='Add'
-                    onRight={() => Actions.createEmployee()}
-                />
-                <Scene
-                    key='createEmployee'
-                    component={CreateEmployee}
-                    title='Create Employee'
+                    key='EventZoom'
+                    component={EventZoomComponent}
+                    title='View Event'
+                    leftTitle='Back'
+                    onLeft={() => Actions.EventList()}
                 />
             </Scene>
              <Scene key='auth'>

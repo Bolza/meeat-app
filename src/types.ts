@@ -1,8 +1,23 @@
+export interface Event {
+    id: string;
+    date: string;
+    location: GeoRegion;
+    details: LocationDetails | any;
+    slots: number;
+    owner: string;
+    guests: string[];
+}
+
 export interface EventCreationState {
     date: string;
     location: GeoRegion;
     details: LocationDetails | any;
     slots: number;
+}
+
+export interface EventZoomState {
+    item: Event;
+    loading: boolean;
 }
 
 export interface GeoRegion {
@@ -31,6 +46,7 @@ export interface AuthState {
 
 export interface AppState {
     eventCreation: EventCreationState,
+    eventZoom: EventCreationState,
     events: any[],
     auth: AuthState
 }
