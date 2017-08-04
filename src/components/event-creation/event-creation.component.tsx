@@ -5,7 +5,7 @@ import { Button, Rating } from 'react-native-elements'
 import { isEmpty } from 'lodash';
 
 import { EventCreationSetDateAction, CreateEventAction, EventCreationSetSlotsAction} from './event-creation.actions';
-import { Card, CardSection, Input, Stepper, HideableView, Container } from '../common';
+import { Card, CardSection, Input, Stepper, HideableView, Container, LocationCard } from '../common';
 import { GeoRegion } from '../../types';
 import EventLocation from './event-location.component';
 import DatePicker from './event-date-picker.component';
@@ -48,7 +48,7 @@ class EventCreationComponent extends Component<Props, State> {
                         style={{flex: 1}}
                         onListVisibility={(visible) => this.setListVisibility(visible)}
                     />
-                    {RenderDetails(this.props.details)}
+                    <LocationCard item={this.props.details} />
                 </View>
                 <HideableView
                     style={{height: 300}}
@@ -124,26 +124,5 @@ const mapStateToProps = (state) => {
     // console.log('mapStateToProps', state.eventCreation);
     return {...state.eventCreation};
 };
-
-const RenderDetails = (details) => {
-    if (!isEmpty(details)) {
-        return (
-            <Card style={{flex: 0.5}}>
-                <CardSection style={{justifyContent: 'space-between'}}>
-                    <Text style={styles.details}>{details.name}</Text>
-                    <Text style={styles.details}>{details.rating}</Text>
-                </CardSection>
-                <CardSection>
-                    <Text style={styles.details}>{details.address}</Text>
-                </CardSection>
-                <CardSection>
-                    <Text style={styles.details}>{details.phone}</Text>
-                </CardSection>
-            </Card>
-        );
-    } else {
-        return null;
-    }
-}
 
 export default connect(mapStateToProps)(EventCreationComponent);

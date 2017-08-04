@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Scene, Router, Actions } from 'react-native-router-flux';
 import Login from './components/login/login.component';
-import EmployeeListComponent from './components/employee-list.component';
-import CreateEmployee from './components/create-employee.component';
 import EventCreationComponent from './components/event-creation/event-creation.component';
 import EventZoomComponent from './components/event-zoom/event-zoom.component';
 import EventListComponent from './components/event-list/event-list.component';

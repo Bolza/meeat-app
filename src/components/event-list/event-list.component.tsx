@@ -12,7 +12,6 @@ class EventListComponent extends Component<Props, State> {
 
     componentWillMount() {
         this.state = {};
-        console.log('EventListComponent', this.props)
         this.props.dispatch(EventListFetchAction());
     }
 

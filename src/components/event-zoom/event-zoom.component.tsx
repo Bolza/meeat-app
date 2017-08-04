@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
-import { Button, Rating, Card } from 'react-native-elements'
+import { Button, Card } from 'react-native-elements';
 import { isEmpty, forOwn, forEach } from 'lodash';
 
 import { Input, Stepper, HideableView, Container, LocationCard } from '../common';
 import { GeoRegion } from '../../types';
 import { EventZoomFetchAction, EventZoomJoinAction } from './event-zoom.actions';
+import { UserList } from './user-list.component';
 
 interface State { [key: string]: any };
 interface Props { [key: string]: any }
@@ -19,9 +20,6 @@ class EventZoomComponent extends Component<Props, State> {
     // componentWillReceiveProps (nextProps) {}
 
     render() {
-        const listItems = this.props.item.guests.map((guestId) =>
-            <Text key={guestId}>{guestId}</Text>
-        );
         return (
             <Container
                 fade
@@ -41,7 +39,7 @@ class EventZoomComponent extends Component<Props, State> {
                 </Card>
                 <Card>
                     <Text>Guests</Text>
-                    {listItems}
+                    <UserList items={this.props.item.guests} />
                 </Card>
                 <Card>
                     <Button
