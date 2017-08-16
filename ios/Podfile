@@ -6,8 +6,8 @@ target 'MeeatApp' do
   # use_frameworks!
 
   # Pods for MeeatApp
-  # pod 'Google/SignIn'
   pod 'Google/SignIn'
+  pod 'Firebase/Core'
   target 'MeeatApp-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
