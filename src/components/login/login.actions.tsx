@@ -21,23 +21,23 @@ export const LOGIN_ATTEMPT_ACTION = 'Login attempt';
 export const LoginAttemptAction = ({ email, password }) => {
     return (dispatch) => {
         dispatch({ type: LOGIN_ATTEMPT_ACTION });
-        const provider = new firebase.auth.GoogleAuthProvider();
-        // provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
-        firebase.auth().signInWithRedirect(provider).then(function(result) {
-            const token = result.credential.accessToken;
-            const user = result.user;
-            console.log(user, token)
-        }).catch((error) => {
-            // ...
-        });
-        // firebase.auth().signInWithEmailAndPassword(email, password)
-        //     .then(user => dispatch(LoginSuccessAction(user)))
-        //     // .catch(() => dispatch(LoginFailAction()))
-        //     .catch(() => {
-        //         // firebase.auth().createUserWithEmailAndPassword(email, password)
-        //         //     .then(user => dispatch(LoginSuccessAction(user)))
-        //         //     .catch(() => dispatch(LoginFailAction()));
-        //     });
+        // const provider = new firebase.auth.GoogleAuthProvider();
+        // // provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+        // firebase.auth().signInWithRedirect(provider).then(function(result) {
+        //     const token = result.credential.accessToken;
+        //     const user = result.user;
+        //     console.log(user, token)
+        // }).catch((error) => {
+        //     // ...
+        // });
+        firebase.auth().signInWithEmailAndPassword(email, password)
+            .then(user => dispatch(LoginSuccessAction(user)))
+            // .catch(() => dispatch(LoginFailAction()))
+            .catch(() => {
+                // firebase.auth().createUserWithEmailAndPassword(email, password)
+                //     .then(user => dispatch(LoginSuccessAction(user)))
+                //     .catch(() => dispatch(LoginFailAction()));
+            });
     };
 };
 
