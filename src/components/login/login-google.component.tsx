@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import React, { Component } from 'react';
-import { COLOR, ThemeProvider, Button } from 'react-native-material-ui';
-import { Text, StyleSheet } from 'react-native';
+// import { COLOR, ThemeProvider } from 'react-native-material-ui';
+import { Text, StyleSheet, Button } from 'react-native';
 import { connect } from 'react-redux';
 
 import { EmailChangedAction, PasswordChangedAction, LoginSuccessAction, LoginAttemptAction } from './login.actions';
@@ -16,23 +16,32 @@ interface Props { [key: string]: any }
 class LoginGoogleComponent extends Component<Props, State> {
     render() {
         return (
-            <GoogleSigninButton
-                style={{width: 48, height: 48}}
-                size={GoogleSigninButton.Size.Icon}
-                color={GoogleSigninButton.Color.Dark}
+            <Button
+                title='login'
                 onPress={this.signin.bind(this)}
             />
         );
     }
 
     private signin() {
-        GoogleSignin.signIn()
-            .then((user) => {
-                console.log(user);
-                this.setState({user: user});
+        console.log('260439457350');
+        GoogleSignin
+            .configure({
+                iosClientId: '260439457350-ds1ochruf7fb2uvg881o39tm9ko5ac1n.apps.googleusercontent.com'
             })
-            .catch((err) => {
-                console.log('WRONG SIGNIN', err);
+            .then((isOk) => {
+                if (isOk) {
+                    GoogleSignin
+                        .signIn()
+                        .then((user) => {
+                            console.log(user);
+                            this.setState({user: user});
+                        })
+                        .catch((err) => {
+                            console.log('WRONG SIGNIN', err);
+                        })
+                        .done();
+                }
             })
             .done();
     }
