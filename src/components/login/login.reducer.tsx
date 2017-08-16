@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import { EMAIL_CHANGED_ACTION, PASSWORD_CHANGED_ACTION, LOGIN_SUCCESS_ACTION, LOGIN_FAIL_ACTION, LOGIN_ATTEMPT_ACTION } from './auth.actions';
+import { EMAIL_CHANGED_ACTION, PASSWORD_CHANGED_ACTION, LOGIN_SUCCESS_ACTION, LOGIN_FAIL_ACTION, LOGIN_ATTEMPT_ACTION } from './login.actions';
 import { AuthState } from '../../types';
 /* eslint-enable max-len */
 

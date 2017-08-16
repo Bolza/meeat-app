@@ -8,7 +8,7 @@ import EventListComponent from './components/event-list/event-list.component';
 const RouterComponent = () => {
     return (
         <Router sceneStyle={style}>
-            <Scene key='meeat' initial>
+            <Scene key='Meeat' >
                 <Scene
                     key='EventList'
                     component={EventListComponent}
@@ -29,8 +29,8 @@ const RouterComponent = () => {
                     onLeft={() => Actions.EventList()}
                 />
             </Scene>
-             <Scene key='auth'>
-                <Scene key='login'component={Login} title='Login' />
+             <Scene key='Auth' initial>
+                <Scene key='Login' component={Login} title='Login' />
             </Scene>
         </Router>
     );

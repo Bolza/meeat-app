@@ -31,15 +31,13 @@ export const CREATE_EVENT_ACTION = '[EventCreation] Calling Firebase API';
 export const CreateEventAction = (payload) => {
     return (dispatch, getState) => {
         dispatch({ type: CREATE_EVENT_ACTION });
-        //  lets ignore payload
+        // lets ignore payload
         const currentStore = getState().eventCreation;
         firebase.database()
             .ref()
             .child(DB_EVENTS)
             .push(eventObjectFactory(currentStore))
-            .then(res => {
-                dispatch(CreateEventSuccessAction(res));
-            })
+            .then(res => dispatch(CreateEventSuccessAction(res)))
             .catch(err => dispatch(CreateEventFailAction(err)));
     };
 };
@@ -61,12 +59,13 @@ export const CreateEventFailAction = (error) => {
 };
 
 const eventObjectFactory = (originalPayload: EventCreationState): any => {
-    const newPayload = {
-        details: originalPayload.details,
-        date: originalPayload.date,
-        slots: originalPayload.slots,
+    const {details, date, slots} = originalPayload;
+    const owner = firebase.auth().currentUser.uid;
+    return {
+        owner: owner,
+        details: details,
+        date: date,
+        slots: slots,
         createdAt: firebase.database.ServerValue.TIMESTAMP,
-        owner: firebase.auth().currentUser,
     };
-    return newPayload;
 };

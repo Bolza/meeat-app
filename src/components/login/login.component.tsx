@@ -4,7 +4,7 @@ import { COLOR, ThemeProvider, Button } from 'react-native-material-ui';
 import { Text, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 
-import { EmailChangedAction, PasswordChangedAction, LoginSuccessAction, LoginAttemptAction } from './auth.actions';
+import { EmailChangedAction, PasswordChangedAction, LoginSuccessAction, LoginAttemptAction } from './login.actions';
 import { Card, CardSection, Input, Spinner, Container } from '../common/index';
 import { AuthState, AppState } from '../../types';
 /* eslint-enable max-len */
@@ -88,13 +88,13 @@ class Login extends Component<Props, State> {
                     />
                 </CardSection>
 
-                <Container
+                {/* <Container
                     spring
                     loading={this.state.loading}
                     error={this.state.error}
                     message={this.state.message}
                 >
-                </Container>
+                </Container> */}
 
                 <CardSection>
                     {this.renderButton()}

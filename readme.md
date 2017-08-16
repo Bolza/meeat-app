@@ -28,7 +28,7 @@ TODO
 
 - [X] EventZoom: Join Event functionality
 
-- [ ] EventZoom: Render GuestList
+- [X] EventZoom: Render UserList
 
 - [ ] Login: Login w FB & Google
 
