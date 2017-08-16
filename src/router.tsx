@@ -4,6 +4,7 @@ import Login from './components/login/login.component';
 import EventCreationComponent from './components/event-creation/event-creation.component';
 import EventZoomComponent from './components/event-zoom/event-zoom.component';
 import EventListComponent from './components/event-list/event-list.component';
+import {LoginGoogle} from './components/login/login-google.component';
 
 const RouterComponent = () => {
     return (
@@ -30,7 +31,7 @@ const RouterComponent = () => {
                 />
             </Scene>
              <Scene key='Auth' initial>
-                <Scene key='Login' component={Login} title='Login' />
+                <Scene key='Login' component={LoginGoogle} title='Login' />
             </Scene>
         </Router>
     );
