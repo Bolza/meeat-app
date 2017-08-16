@@ -8,6 +8,5 @@ target 'MeeatApp' do
   # Pods for MeeatApp
   pod 'Firebase/Core'
   pod 'Firebase/Auth'
-  pod 'Google/SignIn'
-
+  pod 'GoogleSignIn'
 end

@@ -8,8 +8,9 @@
  */
 
 #import <UIKit/UIKit.h>
-
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+@import Firebase;
+@import GoogleSignIn;
+@interface AppDelegate : UIResponder<UIApplicationDelegate, GIDSignInDelegate>
 
 @property (nonatomic, strong) UIWindow *window;
 
