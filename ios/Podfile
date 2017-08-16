@@ -1,0 +1,29 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'MeeatApp' do
+  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
+  # use_frameworks!
+
+  # Pods for MeeatApp
+  # pod 'Google/SignIn'
+  pod 'Google/SignIn'
+  target 'MeeatApp-tvOSTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+  target 'MeeatAppTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end
+
+target 'MeeatApp-tvOS' do
+  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
+  # use_frameworks!
+
+  # Pods for MeeatApp-tvOS
+
+end
