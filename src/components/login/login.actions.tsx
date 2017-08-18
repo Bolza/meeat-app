@@ -1,5 +1,6 @@
 import firebase from 'firebase';
 import {Actions} from 'react-native-router-flux';
+import {GoogleSignin} from 'react-native-google-signin';
 
 export const EMAIL_CHANGED_ACTION = 'Email changed';
 export const EmailChangedAction = (text) => {
@@ -17,7 +18,7 @@ export const PasswordChangedAction = (text) => {
     };
 };
 
-export const LOGIN_ATTEMPT_ACTION = 'Login attempt';
+export const LOGIN_ATTEMPT_ACTION = '[Login] Email and Password';
 export const LoginAttemptAction = ({ email, password }) => {
     return (dispatch) => {
         dispatch({ type: LOGIN_ATTEMPT_ACTION });
@@ -41,16 +42,34 @@ export const LoginAttemptAction = ({ email, password }) => {
     };
 };
 
-export const LOGIN_SUCCESS_ACTION = 'Login Success';
+export const LOGIN_GOOGLE_ATTEMPT_ACTION = '[Login] With Google';
+export const LoginWithGoogleAction = () => {
+    return (dispatch) => {
+        dispatch({ type: LOGIN_GOOGLE_ATTEMPT_ACTION });
+        GoogleSignin
+            .signIn()
+            .then((user) => {
+                console.log('user ->', user);
+                dispatch(LoginSuccessAction(user))
+            })
+            .catch((err) => {
+                console.log('WRONG SIGNIN', err);
+                dispatch(LoginFailAction())
+            })
+            .done();
+    }
+};
+
+export const LOGIN_SUCCESS_ACTION = '[Login] Success';
 export const LoginSuccessAction = (user) => {
     return (dispatch) => {
         dispatch({ type: LOGIN_SUCCESS_ACTION, payload: user });
         Actions.Meeat();
-        // Actions.EventList();
+        Actions.EventList();
     };
 };
 
-export const LOGIN_FAIL_ACTION = 'Login FAIL';
+export const LOGIN_FAIL_ACTION = '[Login] Fail';
 export const LoginFailAction = () => {
     return {
         type: LOGIN_FAIL_ACTION,

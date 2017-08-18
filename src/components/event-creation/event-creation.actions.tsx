@@ -31,7 +31,8 @@ export const CREATE_EVENT_ACTION = '[EventCreation] Calling Firebase API';
 export const CreateEventAction = (payload) => {
     return (dispatch, getState) => {
         dispatch({ type: CREATE_EVENT_ACTION });
-        // lets ignore payload
+        // XXX: we have to get the current state of the store because the slots
+        // might not be set byn the user (solve by create new smart cmp for that)
         const currentStore = getState().eventCreation;
         firebase.database()
             .ref()
