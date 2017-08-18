@@ -1,6 +1,14 @@
 import firebase from 'firebase';
 import { values, forEach } from 'lodash';
 import {Actions} from 'react-native-router-flux';
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/observable/fromPromise';
+import 'rxjs/add/observable/fromEvent';
+import 'rxjs/add/observable/from';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/operator/scan';
+
 import { EventCreationState, LocationDetails} from '../../types';
 import { DB_EVENTS } from '../../router';
 import { objectValuesToArray } from '../../helpers';
@@ -17,23 +25,27 @@ export const EventZoomFetchAction = (eventId) => {
             ref.off('value', callback);
         }
         ref = firebase.database().ref(DB_EVENTS).child(eventId);
-        callback = ref.on('value', (snapshot) => {
-            const value = snapshot.val();
-            const expandedGuests = expandChild(value.guests);
-            console.log(expandedGuests)
-            dispatch(EventZoomFetchSuccessAction({id: eventId, ...value}));
-        });
+
+        Observable.fromEvent(ref, 'value')
+            .map(resp => (resp as any).val())
+            .subscribe(theEvent => {
+                const guestArray = objectValuesToArray(theEvent.guests);
+                Observable.from(guestArray)
+                    .flatMap(expandChild)
+                    .subscribe((snapshot) => {
+                        console.log('eventss', (snapshot as any).val())
+                    })
+            })
+        // callback = ref.on('value', (snapshot) => {
+        //     dispatch(EventZoomFetchSuccessAction({id: eventId, ...value}));
+        // });
     };
 };
 
-function expandChild(guests) {
-    guests = objectValuesToArray(guests);
-    const expanded = [];
-    guests.forEach(guestId => {
-        ref.child('guests')
-            .child(guestId).once('value').then(g => expanded.push(g));
-    })
-    return expanded;
+function expandChild(guest) {
+    console.log('expandChild', guest)
+    return Observable.fromEvent(ref.child(guest), 'value');
+    //  .child(guestId).once('value').then(g => expanded.push(g));
 }
 
 export const EVENT_ZOOM_FETCH_SUCCESS_ACTION_TYPE = '[EventZoom] FetchAction Success';
