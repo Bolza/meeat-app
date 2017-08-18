@@ -42,6 +42,19 @@ export const LoginAttemptAction = ({ email, password }) => {
     };
 };
 
+function updateProfile(name, photo) {
+    const user = firebase.auth().currentUser;
+    user.updateProfile({
+        displayName: name,
+        photoURL: photo,
+    }).then(function() {
+        console.log(firebase.auth().currentUser)
+        // Update successful.
+    }).catch(function(error) {
+        // An error happened.
+    });
+}
+
 export const LOGIN_GOOGLE_ATTEMPT_ACTION = '[Login] With Google';
 export const LoginWithGoogleAction = () => {
     return (dispatch) => {
@@ -49,11 +62,17 @@ export const LoginWithGoogleAction = () => {
         GoogleSignin
             .signIn()
             .then((user) => {
-                console.log('user ->', user);
-                dispatch(LoginSuccessAction(user))
+                const credential = firebase.auth.GoogleAuthProvider.credential(user.idToken);
+                firebase.auth().signInWithCredential(credential)
+                    .then(() => {
+                        updateProfile(user.name, user.photo);
+                        dispatch(LoginSuccessAction(user))
+                    })
+                    .catch((error) => {
+                        dispatch(LoginFailAction())
+                    });
             })
             .catch((err) => {
-                console.log('WRONG SIGNIN', err);
                 dispatch(LoginFailAction())
             })
             .done();
