@@ -1,10 +1,10 @@
 import moment from 'moment';
-import { values, forEach } from 'lodash';
 import firebase from 'firebase';
 
 import * as actions from './event-zoom.actions';
 import { EventZoomState } from '../../types';
 import {INITIAL_STATE as EVENT_INITIAL_STATE} from '../event-creation/event-creation.reducer';
+import { objectValuesToArray } from '../../helpers';
 
 export const INITIAL_STATE: EventZoomState = {
     item: {...EVENT_INITIAL_STATE, owner: '', guests: [], id: ''},
@@ -21,7 +21,7 @@ export default (state = INITIAL_STATE, action): EventZoomState => {
         case actions.EVENT_ZOOM_FETCH_SUCCESS_ACTION_TYPE:
             const currentUser = firebase.auth().currentUser;
             const isOwned = currentUser.uid === action.payload.owner;
-            const guests = objToArray(action.payload.guests);
+            const guests = objectValuesToArray(action.payload.guests);
             const isGuest = guests.indexOf(currentUser.uid) > -1;
             return {
                 ...state,
@@ -38,7 +38,7 @@ export default (state = INITIAL_STATE, action): EventZoomState => {
                 ...state,
                 item: {
                     ...state.item,
-                    guests: objToArray(action.payload)
+                    guests: objectValuesToArray(action.payload)
                 },
                 loading: false
             };
@@ -46,11 +46,3 @@ export default (state = INITIAL_STATE, action): EventZoomState => {
             return state;
     }
 };
-
-function objToArray(obj) {
-    let array = [];
-    forEach(obj, (v, k) => {
-        array.push(v);
-    });
-    return array;
-}

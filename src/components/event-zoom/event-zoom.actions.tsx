@@ -3,6 +3,7 @@ import { values, forEach } from 'lodash';
 import {Actions} from 'react-native-router-flux';
 import { EventCreationState, LocationDetails} from '../../types';
 import { DB_EVENTS } from '../../router';
+import { objectValuesToArray } from '../../helpers';
 
 let callback;
 let ref;
@@ -18,10 +19,22 @@ export const EventZoomFetchAction = (eventId) => {
         ref = firebase.database().ref(DB_EVENTS).child(eventId);
         callback = ref.on('value', (snapshot) => {
             const value = snapshot.val();
+            const expandedGuests = expandChild(value.guests);
+            console.log(expandedGuests)
             dispatch(EventZoomFetchSuccessAction({id: eventId, ...value}));
         });
     };
 };
+
+function expandChild(guests) {
+    guests = objectValuesToArray(guests);
+    const expanded = [];
+    guests.forEach(guestId => {
+        ref.child('guests')
+            .child(guestId).once('value').then(g => expanded.push(g));
+    })
+    return expanded;
+}
 
 export const EVENT_ZOOM_FETCH_SUCCESS_ACTION_TYPE = '[EventZoom] FetchAction Success';
 export const EventZoomFetchSuccessAction = (payload) => {
@@ -44,7 +57,6 @@ export const EventZoomJoinAction = (eventId) => {
             })
             .catch(err => {
                 console.log('error', err)
-                // dispatch(CreateEventFailAction(err));
             });
     };
 };
