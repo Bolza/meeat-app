@@ -16,6 +16,8 @@ Android Troubleshooting
 Libraries Used
 - [react-native-elements](https://github.com/react-native-training/react-native-elements)
 
+- [react-native-google-signin](https://github.com/devfd/react-native-google-signin)
+
 TODO
 
 - [ ] EventCreation: DatePicker should be fixed to accept minutesInterval, should we use another one?
@@ -30,7 +32,11 @@ TODO
 
 - [X] EventZoom: Render UserList
 
-- [ ] Login: Login w FB & Google
+- [X] Login: Login Google
+
+- [ ] Login: Enable Google.signIn offlineAccess
+
+- [ ] Login: Login Facebook
 
 - [ ] EventZoom: Edit Event functionality
 

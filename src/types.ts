@@ -5,7 +5,7 @@ export interface Event {
     details: LocationDetails | any;
     slots: number;
     owner: string;
-    guests: string[];
+    guests: User[];
 }
 
 export interface EventCreationState {
@@ -40,8 +40,21 @@ export interface LocationDetails {
 export interface AuthState {
     email: string;
     password: string;
-    user: any;
+    user: User;
     error: string;
+}
+
+export interface User {
+    accessToken: string;
+    accessTokenExpirationDate: Number;
+    email: string;
+    familyName: string;
+    givenName: string;
+    id: string;
+    idToken: string;
+    name: string;
+    photo: string;
+    serverAuthCode: string;
 }
 
 export interface AppState {

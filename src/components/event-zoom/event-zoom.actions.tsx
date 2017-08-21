@@ -1,8 +1,23 @@
 import firebase from 'firebase';
 import { values, forEach } from 'lodash';
 import {Actions} from 'react-native-router-flux';
-import { EventCreationState, LocationDetails} from '../../types';
+import {Observable} from 'rxjs/Observable';
+import {Subject} from 'rxjs/Subject';
+import 'rxjs/add/observable/forkJoin';
+import 'rxjs/add/observable/fromPromise';
+import 'rxjs/add/observable/fromEvent';
+import 'rxjs/add/observable/from';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/operator/take';
+import 'rxjs/add/operator/zip';
+import 'rxjs/add/operator/scan';
+import 'rxjs/add/operator/merge';
+import 'rxjs/add/operator/reduce';
+
+import { EventCreationState, LocationDetails, User } from '../../types';
 import { DB_EVENTS } from '../../router';
+import { objectValuesToArray } from '../../helpers';
 
 let callback;
 let ref;
@@ -16,12 +31,36 @@ export const EventZoomFetchAction = (eventId) => {
             ref.off('value', callback);
         }
         ref = firebase.database().ref(DB_EVENTS).child(eventId);
-        callback = ref.on('value', (snapshot) => {
-            const value = snapshot.val();
-            dispatch(EventZoomFetchSuccessAction({id: eventId, ...value}));
-        });
+        Observable.fromEvent(ref, 'value')
+            .map(resp => (resp as any).val())
+            .subscribe(theEvent => {
+                const guestArray = objectValuesToArray(theEvent.guests);
+                Observable
+                    .from(guestArray)
+                    .flatMap(expandChild)
+                    .take(guestArray.length)
+                    .reduce((list, guest) => addGuestToList(list as any[], guest), [])
+                    .subscribe( (users) => {
+                        const completeEvent = {...theEvent, guests: users}
+                        console.log('eventss', completeEvent);
+                        dispatch(EventZoomFetchSuccessAction({id: eventId, ...completeEvent}));
+                    })
+            });
     };
 };
+
+function addGuestToList(guestlist: any[], rawuser: any): User[] {
+    const key = rawuser.key;
+    const refineduser = rawuser.val();
+    refineduser.gid = refineduser.id;
+    refineduser.id = refineduser.uid = key;
+    return [...guestlist, refineduser];
+}
+
+function expandChild(guest) {
+    const userRef = firebase.database().ref().child('users').child(guest);
+    return Observable.fromEvent(userRef, 'value');
+}
 
 export const EVENT_ZOOM_FETCH_SUCCESS_ACTION_TYPE = '[EventZoom] FetchAction Success';
 export const EventZoomFetchSuccessAction = (payload) => {
@@ -44,7 +83,6 @@ export const EventZoomJoinAction = (eventId) => {
             })
             .catch(err => {
                 console.log('error', err)
-                // dispatch(CreateEventFailAction(err));
             });
     };
 };

@@ -1,16 +1,18 @@
 {
-  "name": "auth",
+  "name": "meeatapp",
   "version": "0.0.1",
   "private": true,
   "scripts": {
     "watch": "npm run build -- -w",
-    "ios": "npm run build && concurrently -r 'npm run watch' 'react-native run-ios'",
+    "ios": "npm run build && concurrently -r 'npm run watch' 'react-native run-ios' && npm run assets",
     "android": "npm run build && concurrently -r 'npm run watch' 'react-native run-android'",
     "tsc": "tsc",
-    "lint": "tslint src/**/*.ts",
+    "lint": "tslint src/**/*.tsx",
     "clean": "rimraf artifacts",
     "build": "npm run clean && npm run tsc --",
     "start": "node node_modules/react-native/local-cli/cli.js start",
+    "assets": "cp -R src/assets/ artifacts/assets/",
+    "assets:watch": "npm run assets -- -w",
     "test": "jest"
   },
   "dependencies": {
@@ -32,7 +34,8 @@
     "react-native-vector-icons": "^4.1.1",
     "react-redux": "^5.0.5",
     "redux": "^3.6.0",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "rxjs": "^5.4.3"
   },
   "devDependencies": {
     "@types/jest": "^20.0.2",

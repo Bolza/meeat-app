@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { Button, Card } from 'react-native-elements';
 import { isEmpty, forOwn, forEach } from 'lodash';
@@ -17,15 +17,10 @@ class EventZoomComponent extends Component<Props, State> {
     componentWillMount() {
         this.state = {};
     }
-    // componentWillReceiveProps (nextProps) {}
 
     render() {
         return (
-            <Container
-                fade
-                style={{flex: 1}}
-                success={this.state.completeVisible}
-            >
+            <ScrollView>
                 <Card>
                     <LocationCard item={this.props.item.details} />
                 </Card>
@@ -46,15 +41,20 @@ class EventZoomComponent extends Component<Props, State> {
                     <Text>{this.props.item.isOwned ? 'YES' : 'NO'}</Text>
                 </Card>
                 <Card>
+                    <Text>Are you aleady a guest?</Text>
+                    <Text>{this.props.item.isGuest ? 'YES' : 'NO'}</Text>
+                </Card>
+                <Card>
                     <Button
                         raised
+                        disabled={this.props.item.isGuest}
                         containerViewStyle={styles.creationButton}
                         backgroundColor='#1faadb'
                         icon={{name: 'done'}}
                         onPress={() => this.joinTheEvent()}
                     />
                 </Card>
-            </Container>
+            </ScrollView>
         );
     }
 
