@@ -9,13 +9,13 @@ class UserListComponent extends Component<Props, State> {
     render() {
         let listItems;
         if (this.props.items.length) {
-            listItems = this.props.items.map((guestId) =>
+            listItems = this.props.items.map((item) =>
                 <ListItem
                     hideChevron
                     roundAvatar
-                    avatar={'http://via.placeholder.com/150x150'}
-                    key={guestId}
-                    title={guestId}
+                    avatar={item.photo}
+                    key={item.id}
+                    title={item.name}
                 />
             );
         } else {

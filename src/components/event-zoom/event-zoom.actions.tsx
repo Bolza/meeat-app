@@ -2,12 +2,18 @@ import firebase from 'firebase';
 import { values, forEach } from 'lodash';
 import {Actions} from 'react-native-router-flux';
 import {Observable} from 'rxjs/Observable';
+import {Subject} from 'rxjs/Subject';
+import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/observable/from';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/operator/take';
+import 'rxjs/add/operator/zip';
 import 'rxjs/add/operator/scan';
+import 'rxjs/add/operator/merge';
+import 'rxjs/add/operator/reduce';
 
 import { EventCreationState, LocationDetails} from '../../types';
 import { DB_EVENTS } from '../../router';
@@ -25,27 +31,35 @@ export const EventZoomFetchAction = (eventId) => {
             ref.off('value', callback);
         }
         ref = firebase.database().ref(DB_EVENTS).child(eventId);
-
         Observable.fromEvent(ref, 'value')
             .map(resp => (resp as any).val())
             .subscribe(theEvent => {
                 const guestArray = objectValuesToArray(theEvent.guests);
-                Observable.from(guestArray)
+                Observable
+                    .from(guestArray)
                     .flatMap(expandChild)
-                    .subscribe((snapshot) => {
-                        console.log('eventss', (snapshot as any).val())
+                    .take(guestArray.length)
+                    // .reduce((a, v) => [...(a as Array<any>), (v as any).val()], [])
+                    // we lose the UID, only keep the google id
+                    .reduce((a, v) => {
+                        const key = (v as any).key;
+                        const val = (v as any).val();
+                        val.id = val.uid = key;
+                        a[key] = val;
+                        return a;
+                    }, {})
+                    .subscribe( (users) => {
+                        const completeEvent = {...theEvent, guests: users}
+                        console.log('eventss', completeEvent);
+                        dispatch(EventZoomFetchSuccessAction({id: eventId, ...completeEvent}));
                     })
-            })
-        // callback = ref.on('value', (snapshot) => {
-        //     dispatch(EventZoomFetchSuccessAction({id: eventId, ...value}));
-        // });
+            });
     };
 };
 
 function expandChild(guest) {
-    console.log('expandChild', guest)
-    return Observable.fromEvent(ref.child(guest), 'value');
-    //  .child(guestId).once('value').then(g => expanded.push(g));
+    const userRef = firebase.database().ref().child('users').child(guest);
+    return Observable.fromEvent(userRef, 'value');
 }
 
 export const EVENT_ZOOM_FETCH_SUCCESS_ACTION_TYPE = '[EventZoom] FetchAction Success';

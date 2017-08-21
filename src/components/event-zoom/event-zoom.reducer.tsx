@@ -21,8 +21,9 @@ export default (state = INITIAL_STATE, action): EventZoomState => {
         case actions.EVENT_ZOOM_FETCH_SUCCESS_ACTION_TYPE:
             const currentUser = firebase.auth().currentUser;
             const isOwned = currentUser.uid === action.payload.owner;
+
+            const isGuest = action.payload.guests[currentUser.uid] as Boolean;
             const guests = objectValuesToArray(action.payload.guests);
-            const isGuest = guests.indexOf(currentUser.uid) > -1;
             return {
                 ...state,
                 item: {

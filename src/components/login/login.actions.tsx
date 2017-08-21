@@ -1,6 +1,7 @@
 import firebase from 'firebase';
 import {Actions} from 'react-native-router-flux';
 import {GoogleSignin} from 'react-native-google-signin';
+import { User } from '../../types';
 
 export const EMAIL_CHANGED_ACTION = 'Email changed';
 export const EmailChangedAction = (text) => {
@@ -42,17 +43,9 @@ export const LoginAttemptAction = ({ email, password }) => {
     };
 };
 
-function updateProfile(name, photo) {
+function updateUser(userData: User) {
     const user = firebase.auth().currentUser;
-    user.updateProfile({
-        displayName: name,
-        photoURL: photo,
-    }).then(function() {
-        console.log(firebase.auth().currentUser)
-        // Update successful.
-    }).catch(function(error) {
-        // An error happened.
-    });
+    const userRef = firebase.database().ref().child('users').child(user.uid).set(userData);
 }
 
 export const LOGIN_GOOGLE_ATTEMPT_ACTION = '[Login] With Google';
@@ -65,7 +58,7 @@ export const LoginWithGoogleAction = () => {
                 const credential = firebase.auth.GoogleAuthProvider.credential(user.idToken);
                 firebase.auth().signInWithCredential(credential)
                     .then(() => {
-                        updateProfile(user.name, user.photo);
+                        updateUser(user);
                         dispatch(LoginSuccessAction(user))
                     })
                     .catch((error) => {

@@ -5,7 +5,7 @@ export interface Event {
     details: LocationDetails | any;
     slots: number;
     owner: string;
-    guests: string[];
+    guests: User[];
 }
 
 export interface EventCreationState {
