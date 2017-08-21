@@ -22,7 +22,7 @@ export default (state = INITIAL_STATE, action): EventZoomState => {
             const currentUser = firebase.auth().currentUser;
             const isOwned = currentUser.uid === action.payload.owner;
 
-            const isGuest = action.payload.guests[currentUser.uid] as Boolean;
+            const isGuest = !!action.payload.guests[currentUser.uid];
             const guests = objectValuesToArray(action.payload.guests);
             return {
                 ...state,

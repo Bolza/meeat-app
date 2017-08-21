@@ -15,7 +15,7 @@ import 'rxjs/add/operator/scan';
 import 'rxjs/add/operator/merge';
 import 'rxjs/add/operator/reduce';
 
-import { EventCreationState, LocationDetails} from '../../types';
+import { EventCreationState, LocationDetails, User } from '../../types';
 import { DB_EVENTS } from '../../router';
 import { objectValuesToArray } from '../../helpers';
 
@@ -39,15 +39,7 @@ export const EventZoomFetchAction = (eventId) => {
                     .from(guestArray)
                     .flatMap(expandChild)
                     .take(guestArray.length)
-                    // .reduce((a, v) => [...(a as Array<any>), (v as any).val()], [])
-                    // we lose the UID, only keep the google id
-                    .reduce((a, v) => {
-                        const key = (v as any).key;
-                        const val = (v as any).val();
-                        val.id = val.uid = key;
-                        a[key] = val;
-                        return a;
-                    }, {})
+                    .reduce((list, guest) => addGuestToList(list as any[], guest), [])
                     .subscribe( (users) => {
                         const completeEvent = {...theEvent, guests: users}
                         console.log('eventss', completeEvent);
@@ -56,6 +48,14 @@ export const EventZoomFetchAction = (eventId) => {
             });
     };
 };
+
+function addGuestToList(guestlist: any[], rawuser: any): User[] {
+    const key = rawuser.key;
+    const refineduser = rawuser.val();
+    refineduser.gid = refineduser.id;
+    refineduser.id = refineduser.uid = key;
+    return [...guestlist, refineduser];
+}
 
 function expandChild(guest) {
     const userRef = firebase.database().ref().child('users').child(guest);
