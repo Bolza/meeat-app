@@ -24,7 +24,7 @@ TODO
 
 - [ ] EventCreation: DatePicker should be fixed to accept minutesInterval, should we use another one?
 
-- [ ] EventList: We need [Geofire](https://github.com/firebase/geofire) to order by proximity
+- [X] EventList: Order by proximity
 
 - [ ] Store: We Need to clear up the shit with the location coordinates in redux
 

@@ -10,13 +10,13 @@ import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/reduce';
 import { getCurrentUser, getEventLocationsRef, getLocation, getEventRef } from '../../database';
-import { User, ListLocationalEventType } from '../../types';
+import { ListLocationalEventType } from '../../types';
 
 let currPos = [0, 0];
 let locationWatcherRef;
 let geoQuery;
 const SENSIBILITY = 0.020; // 20 metres
-const RANGE = 100; // km
+const RANGE = 10; // km
 const eventListeners = {};
 
 export function observeEventsAroundYou(): Observable<ListLocationalEventType> {
