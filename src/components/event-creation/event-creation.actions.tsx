@@ -1,7 +1,8 @@
 import firebase from 'firebase';
+import GeoFire from 'geofire';
 import {Actions} from 'react-native-router-flux';
 import { EventCreationState, LocationDetails} from '../../types';
-import { DB_EVENTS } from '../../router';
+import { DB_EVENTS, DB_EVENT_LOCATIONS } from '../../router';
 
 export const EVENT_CREATION_SET_LOCATION_ACTION_TYPE = '[EventCreation] SetLocation';
 export const EventCreationSetLocationAction = (payload: LocationDetails) => {
@@ -34,11 +35,16 @@ export const CreateEventAction = (payload) => {
         // XXX: we have to get the current state of the store because the slots
         // might not be set byn the user (solve by create new smart cmp for that)
         const currentStore = getState().eventCreation;
-        firebase.database()
-            .ref()
-            .child(DB_EVENTS)
-            .push(eventObjectFactory(currentStore))
-            .then(res => dispatch(CreateEventSuccessAction(res)))
+        const eventsRef = firebase.database().ref(DB_EVENT_LOCATIONS)
+        const geofireRef = new GeoFire(eventsRef);
+        const ref = firebase.database().ref(DB_EVENTS).push();
+
+        ref.set(eventObjectFactory(currentStore, ref.key))
+            .then(res => {
+                geofireRef.set(ref.key, [currentStore.details.latitude, currentStore.details.longitude]);
+                // TODO: is the currentStore that we are setting actually used?
+                dispatch(CreateEventSuccessAction(currentStore));
+            })
             .catch(err => dispatch(CreateEventFailAction(err)));
     };
 };
@@ -59,10 +65,11 @@ export const CreateEventFailAction = (error) => {
     };
 };
 
-const eventObjectFactory = (originalPayload: EventCreationState): any => {
+const eventObjectFactory = (originalPayload: EventCreationState, id): any => {
     const {details, date, slots} = originalPayload;
     const owner = firebase.auth().currentUser.uid;
     return {
+        id,
         owner: owner,
         details: details,
         date: date,

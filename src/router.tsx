@@ -42,5 +42,6 @@ const style = {
 };
 
 export const DB_EVENTS: string = 'app/events';
+export const DB_EVENT_LOCATIONS: string = 'app/event_locations';
 
 export default RouterComponent;

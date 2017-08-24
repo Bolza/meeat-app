@@ -19,7 +19,6 @@ class UserListComponent extends Component<Props, State> {
                 />
             );
         } else {
-            // listItems = <ListItem title={'No Users'} />
             listItems = <Text>No Users</Text>
         }
         return (

@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { List, ListItem } from 'react-native-elements'
 import { AppState } from '../../types';
-import { EventListFetchAction, EventListToZoomAction } from './event-list.actions';
+import { EventListToZoomAction, EventListFetchAroundUserAction } from './event-list.actions';
 
 interface State { [key: string]: any }
 interface Props { [key: string]: any }
@@ -12,7 +12,7 @@ class EventListComponent extends Component<Props, State> {
 
     componentWillMount() {
         this.state = {};
-        this.props.dispatch(EventListFetchAction());
+        this.props.dispatch(EventListFetchAroundUserAction());
     }
 
     render() {
@@ -39,7 +39,7 @@ class EventListComponent extends Component<Props, State> {
     private eventListItem({item}) {
         return <ListItem
             title={item.details.name}
-            subtitle={`${item.slots} available seats`}
+            subtitle={`${item.slots} available seats, ${Math.round(item.distance)} km`}
             onPress={this.navigateToZoom.bind(this, item.id)}
         />;
     }

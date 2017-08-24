@@ -25,24 +25,20 @@ class EventZoomComponent extends Component<Props, State> {
                     <LocationCard item={this.props.item.details} />
                 </Card>
                 <Card>
-                    <Text>Free Slots</Text>
-                    <Text>{this.props.item.slots}</Text>
+                    <Text>Free Slots | {this.props.item.slots}</Text>
                 </Card>
                 <Card>
-                    <Text>Date</Text>
-                    <Text>{this.props.item.date}</Text>
+                    <Text>Date | {this.props.item.date}</Text>
                 </Card>
                 <Card>
                     <Text>Guests</Text>
                     <UserList items={this.props.item.guests} />
                 </Card>
                 <Card>
-                    <Text>Are you the owner of the event</Text>
-                    <Text>{this.props.item.isOwned ? 'YES' : 'NO'}</Text>
+                    <Text>you the owner | {this.props.item.isOwned ? 'YES' : 'NO'}</Text>
                 </Card>
                 <Card>
-                    <Text>Are you aleady a guest?</Text>
-                    <Text>{this.props.item.isGuest ? 'YES' : 'NO'}</Text>
+                    <Text>aleady a guest? | {this.props.item.isGuest ? 'YES' : 'NO'}</Text>
                 </Card>
                 <Card>
                     <Button
