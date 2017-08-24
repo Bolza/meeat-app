@@ -11,10 +11,10 @@ export const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action): any => {
     switch (action.type) {
-        case actions.EVENT_LIST_ADD_ACTION_TYPE:
+        case actions.EVENT_LIST_UPDATE_ACTION_TYPE:
             const currentUser = getCurrentUser();
             const isOwned = currentUser.uid === action.payload.owner;
-            if (isOwned) return state;
+            if (isOwned) return { ...state, eventOwned: action.payload };
 
             let temp = [...state.list];
             const eventAlreadyExists = !!find(temp, {id: action.payload.id});

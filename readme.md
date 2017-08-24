@@ -26,6 +26,8 @@ TODO
 
 - [X] EventList: Order by proximity
 
+- [ ] EventList: Created/Owned Event on Top
+
 - [ ] Store: We Need to clear up the shit with the location coordinates in redux
 
 - [X] Feature: EventZoom view
