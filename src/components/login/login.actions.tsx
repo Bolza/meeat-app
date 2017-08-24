@@ -45,6 +45,7 @@ export const LoginAttemptAction = ({ email, password }) => {
 
 function updateUser(userData: User) {
     const user = firebase.auth().currentUser;
+    userData.id = user.uid;
     const userRef = firebase.database().ref().child('users').child(user.uid).set(userData);
 }
 

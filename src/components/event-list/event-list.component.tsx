@@ -39,7 +39,7 @@ class EventListComponent extends Component<Props, State> {
     private eventListItem({item}) {
         return <ListItem
             title={item.details.name}
-            subtitle={`${item.slots} available seats`}
+            subtitle={`${item.slots} available seats, ${item.distance} km`}
             onPress={this.navigateToZoom.bind(this, item.id)}
         />;
     }

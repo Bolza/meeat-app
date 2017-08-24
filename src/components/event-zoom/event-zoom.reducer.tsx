@@ -1,5 +1,6 @@
 import moment from 'moment';
 import firebase from 'firebase';
+import {find} from 'lodash';
 
 import * as actions from './event-zoom.actions';
 import { EventZoomState } from '../../types';
@@ -22,8 +23,8 @@ export default (state = INITIAL_STATE, action): EventZoomState => {
             const currentUser = firebase.auth().currentUser;
             const isOwned = currentUser.uid === action.payload.owner;
 
-            const isGuest = !!action.payload.guests[currentUser.uid];
-            const guests = objectValuesToArray(action.payload.guests);
+            const guests = action.payload.guests || [];
+            const isGuest = !!find(guests, {id: currentUser.uid});
             return {
                 ...state,
                 item: {
@@ -34,15 +35,15 @@ export default (state = INITIAL_STATE, action): EventZoomState => {
                 },
                 loading: false
             };
-        case actions.EVENT_ZOOM_JOIN_SUCCESS_ACTION_TYPE:
-            return {
-                ...state,
-                item: {
-                    ...state.item,
-                    guests: objectValuesToArray(action.payload)
-                },
-                loading: false
-            };
+        // case actions.EVENT_ZOOM_JOIN_SUCCESS_ACTION_TYPE:
+        //     return {
+        //         ...state,
+        //         item: {
+        //             ...state.item,
+        //             guests: objectValuesToArray(action.payload)
+        //         },
+        //         loading: false
+        //     };
         default:
             return state;
     }

@@ -14,11 +14,7 @@ class LocationCardComponent extends Component<Props, State> {
                 <Card style={{justifyContent: 'space-between'}}>
                     <Text style={styles.details}>{this.props.item.name}</Text>
                     <Text style={styles.details}>{this.props.item.rating}</Text>
-                </Card>
-                <Card>
                     <Text style={styles.details}>{this.props.item.address}</Text>
-                </Card>
-                <Card>
                     <Text style={styles.details}>{this.props.item.phone}</Text>
                 </Card>
             </View>

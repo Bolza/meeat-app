@@ -1,25 +1,43 @@
 import firebase from 'firebase';
+import GeoFire from 'geofire';
 import { values, forEach, map } from 'lodash';
 import {Actions} from 'react-native-router-flux';
 import { EventCreationState, LocationDetails} from '../../types';
-import { DB_EVENTS } from '../../router';
+import { DB_EVENTS, DB_EVENT_LOCATIONS } from '../../router';
 import { EventZoomFetchAction } from '../event-zoom/event-zoom.actions';
+import { objectValuesToArray } from '../../helpers';
 
 let callback;
 let ref;
+
+export const EVENT_LIST_FETCH_CLOSEST_ACTION_TYPE = '[EventList] Fetch by Distance Action';
+export const EventListFetchClosestAction = () => {
+    return (dispatch) => {
+        dispatch({ type: EVENT_LIST_FETCH_CLOSEST_ACTION_TYPE });
+        const eventsRef = firebase.database().ref(DB_EVENT_LOCATIONS)
+        const geofireRef = new GeoFire(eventsRef);
+        const geoQuery = geofireRef.query({
+            center: [15, 15],
+            radius: 10000
+        });
+        geoQuery.on('key_entered', function(key, location, distance) {
+            console.log(Math.random().toString(), key, location, distance);
+        });
+    };
+};
 
 export const EVENT_LIST_FETCH_ACTION_TYPE = '[EventList] FetchAction';
 export const EventListFetchAction = () => {
     return (dispatch) => {
         dispatch({ type: EVENT_LIST_FETCH_ACTION_TYPE });
-        const user = firebase.auth().currentUser;
         if (ref && callback) {
             ref.off('value', callback);
         }
         ref = firebase.database().ref(DB_EVENTS)
+
         callback = ref.on('value', (snapshot) => {
             const value = snapshot.val();
-            const eventsArray = objToArray(value);
+            const eventsArray = objectValuesToArray(value);
 
             dispatch(EventListFetchSuccessAction(eventsArray));
         });
@@ -43,11 +61,3 @@ export const EventListToZoomAction = (eventId: string) => {
         Actions.EventZoom({type: 'reset', eventId: eventId});
     };
 };
-
-function objToArray(obj) {
-    let array = [];
-    forEach(obj, (v, k) => {
-        array.push({...v, id: k});
-    });
-    return array;
-}

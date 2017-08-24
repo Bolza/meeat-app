@@ -12,11 +12,13 @@ Run with
 
 Android Troubleshooting
 - see react-native-vector-icons installation
+- see https://github.com/firebase/geofire-objc/issues/51 for geofire ios issues
 
 Libraries Used
 - [react-native-elements](https://github.com/react-native-training/react-native-elements)
-
 - [react-native-google-signin](https://github.com/devfd/react-native-google-signin)
+- [geofire-js](https://github.com/firebase/geofire-js)
+
 
 TODO
 
