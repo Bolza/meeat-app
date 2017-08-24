@@ -1,6 +1,9 @@
-import * as actions from './event-list.actions';
 import {sortBy, filter, find} from 'lodash';
+
+import * as actions from './event-list.actions';
+import { getCurrentUser } from '../../database';
 import { EventCreationState } from '../../types';
+import firebase from 'firebase';
 
 export const INITIAL_STATE = {
     list: []
@@ -9,16 +12,20 @@ export const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action): any => {
     switch (action.type) {
         case actions.EVENT_LIST_ADD_ACTION_TYPE:
+            const currentUser = getCurrentUser();
+            const isOwned = currentUser.uid === action.payload.owner;
+            if (isOwned) return state;
+
             let temp = [...state.list];
             const eventAlreadyExists = !!find(temp, {id: action.payload.id});
-
+            const eventObj = {...action.payload};
             if (eventAlreadyExists) {
-                temp = updateList(temp, action.payload);
+                temp = updateList(temp, eventObj);
             } else {
-                temp.push(action.payload);
+                temp.push(eventObj);
             }
 
-            temp = sortBy(temp, ['distance']);
+            temp = sortEvents(temp);
 
             return {
                 ...state,
@@ -39,4 +46,9 @@ function updateList(tList, item) {
         if (obj.id === item.id) return item;
         return obj;
     });
+}
+
+function sortEvents(tList) {
+    tList = sortBy(tList, ['distance']);
+    return tList;
 }
