@@ -63,3 +63,10 @@ export interface AppState {
     events: any[],
     auth: AuthState
 }
+
+export interface ListLocationalEventType {
+    type: string;
+    id: string;
+    location?: number[];
+    distance?: number;
+}

@@ -62,12 +62,12 @@ export const LoginWithGoogleAction = () => {
                         updateUser(user);
                         dispatch(LoginSuccessAction(user))
                     })
-                    .catch((error) => {
-                        dispatch(LoginFailAction())
+                    .catch((err) => {
+                        dispatch(LoginFailAction(err))
                     });
             })
             .catch((err) => {
-                dispatch(LoginFailAction())
+                dispatch(LoginFailAction(err))
             })
             .done();
     }
@@ -83,9 +83,9 @@ export const LoginSuccessAction = (user) => {
 };
 
 export const LOGIN_FAIL_ACTION = '[Login] Fail';
-export const LoginFailAction = () => {
+export const LoginFailAction = (err) => {
     return {
         type: LOGIN_FAIL_ACTION,
-        payload: null
+        payload: err
     };
 };

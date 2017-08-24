@@ -1,14 +1,4 @@
-import firebase from 'firebase';
-import GeoFire from 'geofire';
-import { values, forEach } from 'lodash';
-import {Actions} from 'react-native-router-flux';
-import { EventCreationState, LocationDetails, User } from '../../types';
-import { DB_EVENTS } from '../../router';
-import { objectValuesToArray } from '../../helpers';
 import { observeEvent, addLoggedUserToEvent } from './event-zoom.database';
-
-let callback;
-let ref;
 
 export const EVENT_ZOOM_FETCH_ACTION_TYPE = '[EventZoom] FetchAction';
 export const EventZoomFetchAction = (eventId) => {

@@ -41,7 +41,6 @@ export const CreateEventAction = (payload) => {
 
         ref.set(eventObjectFactory(currentStore, ref.key))
             .then(res => {
-                console.log(res, currentStore)
                 geofireRef.set(ref.key, [currentStore.details.latitude, currentStore.details.longitude]);
                 // TODO: is the currentStore that we are setting actually used?
                 dispatch(CreateEventSuccessAction(currentStore));
