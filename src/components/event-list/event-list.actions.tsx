@@ -1,15 +1,7 @@
-import firebase from 'firebase';
-import GeoFire from 'geofire';
-import { values, forEach, map } from 'lodash';
 import {Actions} from 'react-native-router-flux';
-import { EventCreationState, LocationDetails, ListLocationalEventType} from '../../types';
-import { DB_EVENTS, DB_EVENT_LOCATIONS } from '../../router';
+import { ListLocationalEventType, Event} from '../../types';
 import { EventZoomFetchAction } from '../event-zoom/event-zoom.actions';
-import { objectValuesToArray } from '../../helpers';
-import { observeEventsAroundYou, expandEvent } from './event-list.database';
-
-let callback;
-let ref;
+import { observeEventsAroundYou, observeEvent, forgetEvent } from './event-list.database';
 
 export const EVENT_LIST_FETCH_AROUND_USER_ACTION_TYPE = '[EventList] Fetch Around User Action';
 export const EventListFetchAroundUserAction = () => {
@@ -17,12 +9,13 @@ export const EventListFetchAroundUserAction = () => {
         dispatch({ type: EVENT_LIST_FETCH_AROUND_USER_ACTION_TYPE });
         observeEventsAroundYou().subscribe(locEvent => {
             if (locEvent.type === 'enter') {
-                expandEvent(locEvent.id).subscribe(fullEvent => {
+                observeEvent(locEvent.id).subscribe(fullEvent => {
                     fullEvent.distance = locEvent.distance;
                     dispatch(EventListAddAction(fullEvent))
                 });
             };
             if (locEvent.type === 'exit') {
+                forgetEvent(locEvent.id);
                 dispatch(EventListRemoveAction(locEvent));
             }
         });
@@ -30,7 +23,7 @@ export const EventListFetchAroundUserAction = () => {
 };
 
 export const EVENT_LIST_ADD_ACTION_TYPE = '[EventList] Add Action';
-export const EventListAddAction = (payload) => {
+export const EventListAddAction = (payload: Event) => {
      return {
         type: EVENT_LIST_ADD_ACTION_TYPE,
         payload

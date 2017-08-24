@@ -12,13 +12,12 @@ import 'rxjs/add/operator/reduce';
 import { getCurrentUser, getEventLocationsRef, getLocation, getEventRef } from '../../database';
 import { User, ListLocationalEventType } from '../../types';
 
-let callback;
-let ref;
 let currPos = [0, 0];
 let locationWatcherRef;
 let geoQuery;
 const SENSIBILITY = 0.020; // 20 metres
 const RANGE = 100; // km
+const eventListeners = {};
 
 export function observeEventsAroundYou(): Observable<ListLocationalEventType> {
     const subj = new BehaviorSubject({} as ListLocationalEventType);
@@ -46,9 +45,15 @@ export function observeEventsAroundYou(): Observable<ListLocationalEventType> {
     return subj.asObservable();
 }
 
-export function expandEvent(eventId): any {
+export function observeEvent(eventId): any {
     const subj = new Subject();
     const evRef = getEventRef(eventId);
-    evRef.on('value', v => subj.next(v.val()))
+    eventListeners[eventId] = evRef.on('value', v => subj.next(v.val()))
     return subj;
+}
+
+export function forgetEvent(eventId) {
+    const evRef = getEventRef(eventId);
+    evRef.off('value', eventListeners[eventId]);
+    delete eventListeners[eventId];
 }
