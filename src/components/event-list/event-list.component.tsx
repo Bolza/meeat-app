@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { List, ListItem } from 'react-native-elements'
 import { AppState } from '../../types';
+import EventOwned from '../event-owned/event-owned.component';
 import { EventListToZoomAction, EventListFetchAroundUserAction } from './event-list.actions';
 
 interface State { [key: string]: any }
@@ -18,6 +19,7 @@ class EventListComponent extends Component<Props, State> {
     render() {
         return (
             <View style={{flex: 1}}>
+                <EventOwned item={this.props.eventOwned}></EventOwned>
                 <FlatList
                     keyExtractor={this.keyExtractor}
                     style={{flex: 1}}

@@ -11,7 +11,7 @@ export const EventListFetchAroundUserAction = () => {
             if (locEvent.type === 'enter') {
                 observeEvent(locEvent.id).subscribe(fullEvent => {
                     fullEvent.distance = locEvent.distance;
-                    dispatch(EventListAddAction(fullEvent))
+                    dispatch(EventListUpdateAction(fullEvent))
                 });
             };
             if (locEvent.type === 'exit') {
@@ -22,10 +22,10 @@ export const EventListFetchAroundUserAction = () => {
     };
 };
 
-export const EVENT_LIST_ADD_ACTION_TYPE = '[EventList] Add Action';
-export const EventListAddAction = (payload: Event) => {
+export const EVENT_LIST_UPDATE_ACTION_TYPE = '[EventList] Add Action';
+export const EventListUpdateAction = (payload: Event) => {
      return {
-        type: EVENT_LIST_ADD_ACTION_TYPE,
+        type: EVENT_LIST_UPDATE_ACTION_TYPE,
         payload
     };
 };
